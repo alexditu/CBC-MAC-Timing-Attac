@@ -314,8 +314,8 @@ unsigned char * concat(unsigned char *s1, int s1_len, unsigned char *s2, int s2_
 }
 
 void test_aes_cbc_mac() {
-	unsigned char m[] = "annnna";
-	unsigned char k[] = "AAAA";
+	unsigned char m[] = "ana are";
+	unsigned char k[] = "mere";
 
 	unsigned char *mac = NULL;
 
@@ -327,15 +327,15 @@ void test_aes_cbc_mac() {
 int main(int argc, char **argv) {
 	test_aes_cbc_mac();
 
-	printf("\n\n");
-	test_sha256();
+	// printf("\n\n");
+	// test_sha256();
 
-	test_aes_enc_cbc();
+	// test_aes_enc_cbc();
 
-	test_aes_ecb_enc();
+	// test_aes_ecb_enc();
 
-	// test_evp();
-	test_ljust();
+	// // test_evp();
+	// test_ljust();
 
 
 	return 0;
