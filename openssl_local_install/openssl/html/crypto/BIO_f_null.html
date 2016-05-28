@@ -1,0 +1,56 @@
+<?xml version="1.0" ?>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title></title>
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<link rev="made" href="mailto:root@localhost" />
+</head>
+
+<body style="background-color: white">
+
+
+
+<ul id="index">
+  <li><a href="#NAME">NAME</a></li>
+  <li><a href="#SYNOPSIS">SYNOPSIS</a></li>
+  <li><a href="#DESCRIPTION">DESCRIPTION</a></li>
+  <li><a href="#NOTES">NOTES</a></li>
+  <li><a href="#RETURN-VALUES">RETURN VALUES</a></li>
+  <li><a href="#SEE-ALSO">SEE ALSO</a></li>
+</ul>
+
+<h1 id="NAME">NAME</h1>
+
+<p>BIO_f_null - null filter</p>
+
+<h1 id="SYNOPSIS">SYNOPSIS</h1>
+
+<pre><code> #include &lt;openssl/bio.h&gt;
+
+ BIO_METHOD *   BIO_f_null(void);</code></pre>
+
+<h1 id="DESCRIPTION">DESCRIPTION</h1>
+
+<p>BIO_f_null() returns the null filter BIO method. This is a filter BIO that does nothing.</p>
+
+<p>All requests to a null filter BIO are passed through to the next BIO in the chain: this means that a BIO chain containing a null filter BIO behaves just as though the BIO was not there.</p>
+
+<h1 id="NOTES">NOTES</h1>
+
+<p>As may be apparent a null filter BIO is not particularly useful.</p>
+
+<h1 id="RETURN-VALUES">RETURN VALUES</h1>
+
+<p>BIO_f_null() returns the null filter BIO method.</p>
+
+<h1 id="SEE-ALSO">SEE ALSO</h1>
+
+<p>TBA</p>
+
+
+</body>
+
+</html>
+
+

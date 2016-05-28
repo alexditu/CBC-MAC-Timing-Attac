@@ -1,0 +1,65 @@
+<?xml version="1.0" ?>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title></title>
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<link rev="made" href="mailto:root@localhost" />
+</head>
+
+<body style="background-color: white">
+
+
+
+<ul id="index">
+  <li><a href="#NAME">NAME</a></li>
+  <li><a href="#SYNOPSIS">SYNOPSIS</a></li>
+  <li><a href="#DESCRIPTION">DESCRIPTION</a></li>
+  <li><a href="#NOTES">NOTES</a></li>
+  <li><a href="#RETURN-VALUES">RETURN VALUES</a></li>
+  <li><a href="#SEE-ALSO">SEE ALSO</a></li>
+</ul>
+
+<h1 id="NAME">NAME</h1>
+
+<p>d2i_SSL_SESSION, i2d_SSL_SESSION - convert SSL_SESSION object from/to ASN1 representation</p>
+
+<h1 id="SYNOPSIS">SYNOPSIS</h1>
+
+<pre><code> #include &lt;openssl/ssl.h&gt;
+
+ SSL_SESSION *d2i_SSL_SESSION(SSL_SESSION **a, const unsigned char **pp, long length);
+ int i2d_SSL_SESSION(SSL_SESSION *in, unsigned char **pp);</code></pre>
+
+<h1 id="DESCRIPTION">DESCRIPTION</h1>
+
+<p>d2i_SSL_SESSION() transforms the external ASN1 representation of an SSL/TLS session, stored as binary data at location <b>pp</b> with length <b>length</b>, into an SSL_SESSION object.</p>
+
+<p>i2d_SSL_SESSION() transforms the SSL_SESSION object <b>in</b> into the ASN1 representation and stores it into the memory location pointed to by <b>pp</b>. The length of the resulting ASN1 representation is returned. If <b>pp</b> is the NULL pointer, only the length is calculated and returned.</p>
+
+<h1 id="NOTES">NOTES</h1>
+
+<p>The SSL_SESSION object is built from several malloc()ed parts, it can therefore not be moved, copied or stored directly. In order to store session data on disk or into a database, it must be transformed into a binary ASN1 representation.</p>
+
+<p>When using d2i_SSL_SESSION(), the SSL_SESSION object is automatically allocated. The reference count is 1, so that the session must be explicitly removed using <a href="../../ssl/SSL_SESSION_free.html">SSL_SESSION_free</a>, unless the SSL_SESSION object is completely taken over, when being called inside the get_session_cb() (see <a href="../../ssl/SSL_CTX_sess_set_get_cb.html">SSL_CTX_sess_set_get_cb</a>).</p>
+
+<p>SSL_SESSION objects keep internal link information about the session cache list, when being inserted into one SSL_CTX object&#39;s session cache. One SSL_SESSION object, regardless of its reference count, must therefore only be used with one SSL_CTX object (and the SSL objects created from this SSL_CTX object).</p>
+
+<p>When using i2d_SSL_SESSION(), the memory location pointed to by <b>pp</b> must be large enough to hold the binary representation of the session. There is no known limit on the size of the created ASN1 representation, so the necessary amount of space should be obtained by first calling i2d_SSL_SESSION() with <b>pp=NULL</b>, and obtain the size needed, then allocate the memory and call i2d_SSL_SESSION() again.</p>
+
+<h1 id="RETURN-VALUES">RETURN VALUES</h1>
+
+<p>d2i_SSL_SESSION() returns a pointer to the newly allocated SSL_SESSION object. In case of failure the NULL-pointer is returned and the error message can be retrieved from the error stack.</p>
+
+<p>i2d_SSL_SESSION() returns the size of the ASN1 representation in bytes. When the session is not valid, <b>0</b> is returned and no operation is performed.</p>
+
+<h1 id="SEE-ALSO">SEE ALSO</h1>
+
+<p><a href="../../ssl/ssl.html">ssl</a>, <a href="../../ssl/SSL_SESSION_free.html">SSL_SESSION_free</a>, <a href="../../ssl/SSL_CTX_sess_set_get_cb.html">SSL_CTX_sess_set_get_cb</a></p>
+
+
+</body>
+
+</html>
+
+

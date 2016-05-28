@@ -1,0 +1,61 @@
+<?xml version="1.0" ?>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title></title>
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<link rev="made" href="mailto:root@localhost" />
+</head>
+
+<body style="background-color: white">
+
+
+
+<ul id="index">
+  <li><a href="#NAME">NAME</a></li>
+  <li><a href="#SYNOPSIS">SYNOPSIS</a></li>
+  <li><a href="#DESCRIPTION">DESCRIPTION</a></li>
+  <li><a href="#NOTES">NOTES</a></li>
+  <li><a href="#RETURN-VALUES">RETURN VALUES</a></li>
+  <li><a href="#BUGS">BUGS</a></li>
+  <li><a href="#SEE-ALSO">SEE ALSO</a></li>
+</ul>
+
+<h1 id="NAME">NAME</h1>
+
+<p>SSL_pending - obtain number of readable bytes buffered in an SSL object</p>
+
+<h1 id="SYNOPSIS">SYNOPSIS</h1>
+
+<pre><code> #include &lt;openssl/ssl.h&gt;
+
+ int SSL_pending(const SSL *ssl);</code></pre>
+
+<h1 id="DESCRIPTION">DESCRIPTION</h1>
+
+<p>SSL_pending() returns the number of bytes which are available inside <b>ssl</b> for immediate read.</p>
+
+<h1 id="NOTES">NOTES</h1>
+
+<p>Data are received in blocks from the peer. Therefore data can be buffered inside <b>ssl</b> and are ready for immediate retrieval with <a href="../../ssl/SSL_read.html">SSL_read</a>.</p>
+
+<h1 id="RETURN-VALUES">RETURN VALUES</h1>
+
+<p>The number of bytes pending is returned.</p>
+
+<h1 id="BUGS">BUGS</h1>
+
+<p>SSL_pending() takes into account only bytes from the TLS/SSL record that is currently being processed (if any). If the <b>SSL</b> object&#39;s <i>read_ahead</i> flag is set, additional protocol bytes may have been read containing more TLS/SSL records; these are ignored by SSL_pending().</p>
+
+<p>Up to OpenSSL 0.9.6, SSL_pending() does not check if the record type of pending data is application data.</p>
+
+<h1 id="SEE-ALSO">SEE ALSO</h1>
+
+<p><a href="../../ssl/SSL_read.html">SSL_read</a>, <a href="../../ssl/ssl.html">ssl</a></p>
+
+
+</body>
+
+</html>
+
+

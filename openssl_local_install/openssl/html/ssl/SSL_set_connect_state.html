@@ -1,0 +1,62 @@
+<?xml version="1.0" ?>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title></title>
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<link rev="made" href="mailto:root@localhost" />
+</head>
+
+<body style="background-color: white">
+
+
+
+<ul id="index">
+  <li><a href="#NAME">NAME</a></li>
+  <li><a href="#SYNOPSIS">SYNOPSIS</a></li>
+  <li><a href="#DESCRIPTION">DESCRIPTION</a></li>
+  <li><a href="#NOTES">NOTES</a></li>
+  <li><a href="#RETURN-VALUES">RETURN VALUES</a></li>
+  <li><a href="#SEE-ALSO">SEE ALSO</a></li>
+</ul>
+
+<h1 id="NAME">NAME</h1>
+
+<p>SSL_set_connect_state, SSL_get_accept_state - prepare SSL object to work in client or server mode</p>
+
+<h1 id="SYNOPSIS">SYNOPSIS</h1>
+
+<pre><code> #include &lt;openssl/ssl.h&gt;
+
+ void SSL_set_connect_state(SSL *ssl);
+
+ void SSL_set_accept_state(SSL *ssl);</code></pre>
+
+<h1 id="DESCRIPTION">DESCRIPTION</h1>
+
+<p>SSL_set_connect_state() sets <b>ssl</b> to work in client mode.</p>
+
+<p>SSL_set_accept_state() sets <b>ssl</b> to work in server mode.</p>
+
+<h1 id="NOTES">NOTES</h1>
+
+<p>When the SSL_CTX object was created with <a href="../../ssl/SSL_CTX_new.html">SSL_CTX_new</a>, it was either assigned a dedicated client method, a dedicated server method, or a generic method, that can be used for both client and server connections. (The method might have been changed with <a href="../../ssl/SSL_CTX_set_ssl_version.html">SSL_CTX_set_ssl_version</a> or SSL_set_ssl_method().)</p>
+
+<p>When beginning a new handshake, the SSL engine must know whether it must call the connect (client) or accept (server) routines. Even though it may be clear from the method chosen, whether client or server mode was requested, the handshake routines must be explicitly set.</p>
+
+<p>When using the <a href="../../ssl/SSL_connect.html">SSL_connect</a> or <a href="../../ssl/SSL_accept.html">SSL_accept</a> routines, the correct handshake routines are automatically set. When performing a transparent negotiation using <a href="../../ssl/SSL_write.html">SSL_write</a> or <a href="../../ssl/SSL_read.html">SSL_read</a>, the handshake routines must be explicitly set in advance using either SSL_set_connect_state() or SSL_set_accept_state().</p>
+
+<h1 id="RETURN-VALUES">RETURN VALUES</h1>
+
+<p>SSL_set_connect_state() and SSL_set_accept_state() do not return diagnostic information.</p>
+
+<h1 id="SEE-ALSO">SEE ALSO</h1>
+
+<p><a href="../../ssl/ssl.html">ssl</a>, <a href="../../ssl/SSL_new.html">SSL_new</a>, <a href="../../ssl/SSL_CTX_new.html">SSL_CTX_new</a>, <a href="../../ssl/SSL_connect.html">SSL_connect</a>, <a href="../../ssl/SSL_accept.html">SSL_accept</a>, <a href="../../ssl/SSL_write.html">SSL_write</a>, <a href="../../ssl/SSL_read.html">SSL_read</a>, <a href="../../ssl/SSL_do_handshake.html">SSL_do_handshake</a>, <a href="../../ssl/SSL_CTX_set_ssl_version.html">SSL_CTX_set_ssl_version</a></p>
+
+
+</body>
+
+</html>
+
+

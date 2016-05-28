@@ -1,0 +1,81 @@
+<?xml version="1.0" ?>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title></title>
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<link rev="made" href="mailto:root@localhost" />
+</head>
+
+<body style="background-color: white">
+
+
+
+<ul id="index">
+  <li><a href="#NAME">NAME</a></li>
+  <li><a href="#SYNOPSIS">SYNOPSIS</a></li>
+  <li><a href="#DESCRIPTION">DESCRIPTION</a></li>
+  <li><a href="#NOTES">NOTES</a></li>
+  <li><a href="#SEE-ALSO">SEE ALSO</a></li>
+  <li><a href="#HISTORY">HISTORY</a></li>
+</ul>
+
+<h1 id="NAME">NAME</h1>
+
+<p>d2i_RSAPublicKey, i2d_RSAPublicKey, d2i_RSAPrivateKey, i2d_RSAPrivateKey, d2i_RSA_PUBKEY, i2d_RSA_PUBKEY, i2d_Netscape_RSA, d2i_Netscape_RSA - RSA public and private key encoding functions.</p>
+
+<h1 id="SYNOPSIS">SYNOPSIS</h1>
+
+<pre><code> #include &lt;openssl/rsa.h&gt;
+ #include &lt;openssl/x509.h&gt;
+
+ RSA * d2i_RSAPublicKey(RSA **a, const unsigned char **pp, long length);
+
+ int i2d_RSAPublicKey(RSA *a, unsigned char **pp);
+
+ RSA * d2i_RSA_PUBKEY(RSA **a, const unsigned char **pp, long length);
+
+ int i2d_RSA_PUBKEY(RSA *a, unsigned char **pp);
+
+ RSA * d2i_RSAPrivateKey(RSA **a, const unsigned char **pp, long length);
+
+ int i2d_RSAPrivateKey(RSA *a, unsigned char **pp);
+
+ int i2d_Netscape_RSA(RSA *a, unsigned char **pp, int (*cb)());
+
+ RSA * d2i_Netscape_RSA(RSA **a, const unsigned char **pp, long length, int (*cb)());</code></pre>
+
+<h1 id="DESCRIPTION">DESCRIPTION</h1>
+
+<p>d2i_RSAPublicKey() and i2d_RSAPublicKey() decode and encode a PKCS#1 RSAPublicKey structure.</p>
+
+<p>d2i_RSA_PUBKEY() and i2d_RSA_PUBKEY() decode and encode an RSA public key using a SubjectPublicKeyInfo (certificate public key) structure.</p>
+
+<p>d2i_RSAPrivateKey(), i2d_RSAPrivateKey() decode and encode a PKCS#1 RSAPrivateKey structure.</p>
+
+<p>d2i_Netscape_RSA(), i2d_Netscape_RSA() decode and encode an RSA private key in NET format.</p>
+
+<p>The usage of all of these functions is similar to the d2i_X509() and i2d_X509() described in the <a href="../../crypto/d2i_X509.html">d2i_X509</a> manual page.</p>
+
+<h1 id="NOTES">NOTES</h1>
+
+<p>The <b>RSA</b> structure passed to the private key encoding functions should have all the PKCS#1 private key components present.</p>
+
+<p>The data encoded by the private key functions is unencrypted and therefore offers no private key security.</p>
+
+<p>The NET format functions are present to provide compatibility with certain very old software. This format has some severe security weaknesses and should be avoided if possible.</p>
+
+<h1 id="SEE-ALSO">SEE ALSO</h1>
+
+<p><a href="../../crypto/d2i_X509.html">d2i_X509</a></p>
+
+<h1 id="HISTORY">HISTORY</h1>
+
+<p>TBA</p>
+
+
+</body>
+
+</html>
+
+

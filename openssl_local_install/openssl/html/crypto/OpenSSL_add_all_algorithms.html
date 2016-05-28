@@ -1,0 +1,77 @@
+<?xml version="1.0" ?>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title></title>
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<link rev="made" href="mailto:root@localhost" />
+</head>
+
+<body style="background-color: white">
+
+
+
+<ul id="index">
+  <li><a href="#NAME">NAME</a></li>
+  <li><a href="#SYNOPSIS">SYNOPSIS</a></li>
+  <li><a href="#DESCRIPTION">DESCRIPTION</a></li>
+  <li><a href="#RETURN-VALUES">RETURN VALUES</a></li>
+  <li><a href="#NOTES">NOTES</a></li>
+  <li><a href="#BUGS">BUGS</a></li>
+  <li><a href="#SEE-ALSO">SEE ALSO</a></li>
+</ul>
+
+<h1 id="NAME">NAME</h1>
+
+<p>OpenSSL_add_all_algorithms, OpenSSL_add_all_ciphers, OpenSSL_add_all_digests - add algorithms to internal table</p>
+
+<h1 id="SYNOPSIS">SYNOPSIS</h1>
+
+<pre><code> #include &lt;openssl/evp.h&gt;
+
+ void OpenSSL_add_all_algorithms(void);
+ void OpenSSL_add_all_ciphers(void);
+ void OpenSSL_add_all_digests(void);
+
+ void EVP_cleanup(void);</code></pre>
+
+<h1 id="DESCRIPTION">DESCRIPTION</h1>
+
+<p>OpenSSL keeps an internal table of digest algorithms and ciphers. It uses this table to lookup ciphers via functions such as EVP_get_cipher_byname().</p>
+
+<p>OpenSSL_add_all_digests() adds all digest algorithms to the table.</p>
+
+<p>OpenSSL_add_all_algorithms() adds all algorithms to the table (digests and ciphers).</p>
+
+<p>OpenSSL_add_all_ciphers() adds all encryption algorithms to the table including password based encryption algorithms.</p>
+
+<p>EVP_cleanup() removes all ciphers and digests from the table.</p>
+
+<h1 id="RETURN-VALUES">RETURN VALUES</h1>
+
+<p>None of the functions return a value.</p>
+
+<h1 id="NOTES">NOTES</h1>
+
+<p>A typical application will call OpenSSL_add_all_algorithms() initially and EVP_cleanup() before exiting.</p>
+
+<p>An application does not need to add algorithms to use them explicitly, for example by EVP_sha1(). It just needs to add them if it (or any of the functions it calls) needs to lookup algorithms.</p>
+
+<p>The cipher and digest lookup functions are used in many parts of the library. If the table is not initialized several functions will misbehave and complain they cannot find algorithms. This includes the PEM, PKCS#12, SSL and S/MIME libraries. This is a common query in the OpenSSL mailing lists.</p>
+
+<p>Calling OpenSSL_add_all_algorithms() links in all algorithms: as a result a statically linked executable can be quite large. If this is important it is possible to just add the required ciphers and digests.</p>
+
+<h1 id="BUGS">BUGS</h1>
+
+<p>Although the functions do not return error codes it is possible for them to fail. This will only happen as a result of a memory allocation failure so this is not too much of a problem in practice.</p>
+
+<h1 id="SEE-ALSO">SEE ALSO</h1>
+
+<p><a href="../../crypto/evp.html">evp</a>, <a href="../../crypto/EVP_DigestInit.html">EVP_DigestInit</a>, <a href="../../crypto/EVP_EncryptInit.html">EVP_EncryptInit</a></p>
+
+
+</body>
+
+</html>
+
+

@@ -1,0 +1,120 @@
+<?xml version="1.0" ?>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title></title>
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<link rev="made" href="mailto:root@localhost" />
+</head>
+
+<body style="background-color: white">
+
+
+
+<ul id="index">
+  <li><a href="#NAME">NAME</a></li>
+  <li><a href="#SYNOPSIS">SYNOPSIS</a></li>
+  <li><a href="#DESCRIPTION">DESCRIPTION</a></li>
+  <li><a href="#NOTES">NOTES</a></li>
+  <li><a href="#BUGS">BUGS</a></li>
+  <li><a href="#RETURN-VALUES">RETURN VALUES</a></li>
+  <li><a href="#SEE-ALSO">SEE ALSO</a></li>
+  <li><a href="#HISTORY">HISTORY</a></li>
+</ul>
+
+<h1 id="NAME">NAME</h1>
+
+<p>X509_STORE_CTX_new, X509_STORE_CTX_cleanup, X509_STORE_CTX_free, X509_STORE_CTX_init, X509_STORE_CTX_trusted_stack, X509_STORE_CTX_set_cert, X509_STORE_CTX_set_chain, X509_STORE_CTX_set0_crls, X509_STORE_CTX_get0_param, X509_STORE_CTX_set0_param, X509_STORE_CTX_set_default - X509_STORE_CTX initialisation</p>
+
+<h1 id="SYNOPSIS">SYNOPSIS</h1>
+
+<pre><code> #include &lt;openssl/x509_vfy.h&gt;
+
+ X509_STORE_CTX *X509_STORE_CTX_new(void);
+ void X509_STORE_CTX_cleanup(X509_STORE_CTX *ctx);
+ void X509_STORE_CTX_free(X509_STORE_CTX *ctx);
+
+ int X509_STORE_CTX_init(X509_STORE_CTX *ctx, X509_STORE *store,
+                         X509 *x509, STACK_OF(X509) *chain);
+
+ void X509_STORE_CTX_trusted_stack(X509_STORE_CTX *ctx, STACK_OF(X509) *sk);
+
+ void   X509_STORE_CTX_set_cert(X509_STORE_CTX *ctx,X509 *x);
+ void   X509_STORE_CTX_set_chain(X509_STORE_CTX *ctx,STACK_OF(X509) *sk);
+ void   X509_STORE_CTX_set0_crls(X509_STORE_CTX *ctx, STACK_OF(X509_CRL) *sk);
+
+ X509_VERIFY_PARAM *X509_STORE_CTX_get0_param(X509_STORE_CTX *ctx);
+ void X509_STORE_CTX_set0_param(X509_STORE_CTX *ctx, X509_VERIFY_PARAM *param);
+ int X509_STORE_CTX_set_default(X509_STORE_CTX *ctx, const char *name);</code></pre>
+
+<h1 id="DESCRIPTION">DESCRIPTION</h1>
+
+<p>These functions initialise an <b>X509_STORE_CTX</b> structure for subsequent use by X509_verify_cert().</p>
+
+<p>X509_STORE_CTX_new() returns a newly initialised <b>X509_STORE_CTX</b> structure.</p>
+
+<p>X509_STORE_CTX_cleanup() internally cleans up an <b>X509_STORE_CTX</b> structure. The context can then be reused with an new call to X509_STORE_CTX_init().</p>
+
+<p>X509_STORE_CTX_free() completely frees up <b>ctx</b>. After this call <b>ctx</b> is no longer valid.</p>
+
+<p>X509_STORE_CTX_init() sets up <b>ctx</b> for a subsequent verification operation. The trusted certificate store is set to <b>store</b>, the end entity certificate to be verified is set to <b>x509</b> and a set of additional certificates (which will be untrusted but may be used to build the chain) in <b>chain</b>. Any or all of the <b>store</b>, <b>x509</b> and <b>chain</b> parameters can be <b>NULL</b>.</p>
+
+<p>X509_STORE_CTX_trusted_stack() sets the set of trusted certificates of <b>ctx</b> to <b>sk</b>. This is an alternative way of specifying trusted certificates instead of using an <b>X509_STORE</b>.</p>
+
+<p>X509_STORE_CTX_set_cert() sets the certificate to be vertified in <b>ctx</b> to <b>x</b>.</p>
+
+<p>X509_STORE_CTX_set_chain() sets the additional certificate chain used by <b>ctx</b> to <b>sk</b>.</p>
+
+<p>X509_STORE_CTX_set0_crls() sets a set of CRLs to use to aid certificate verification to <b>sk</b>. These CRLs will only be used if CRL verification is enabled in the associated <b>X509_VERIFY_PARAM</b> structure. This might be used where additional &quot;useful&quot; CRLs are supplied as part of a protocol, for example in a PKCS#7 structure.</p>
+
+<p>X509_VERIFY_PARAM *X509_STORE_CTX_get0_param() retrieves an intenal pointer to the verification parameters associated with <b>ctx</b>.</p>
+
+<p>X509_STORE_CTX_set0_param() sets the intenal verification parameter pointer to <b>param</b>. After this call <b>param</b> should not be used.</p>
+
+<p>X509_STORE_CTX_set_default() looks up and sets the default verification method to <b>name</b>. This uses the function X509_VERIFY_PARAM_lookup() to find an appropriate set of parameters from <b>name</b>.</p>
+
+<h1 id="NOTES">NOTES</h1>
+
+<p>The certificates and CRLs in a store are used internally and should <b>not</b> be freed up until after the associated <b>X509_STORE_CTX</b> is freed. Legacy applications might implicitly use an <b>X509_STORE_CTX</b> like this:</p>
+
+<pre><code>  X509_STORE_CTX ctx;
+  X509_STORE_CTX_init(&amp;ctx, store, cert, chain);</code></pre>
+
+<p>this is <b>not</b> recommended in new applications they should instead do:</p>
+
+<pre><code>  X509_STORE_CTX *ctx;
+  ctx = X509_STORE_CTX_new();
+  if (ctx == NULL)
+        /* Bad error */
+  X509_STORE_CTX_init(ctx, store, cert, chain);</code></pre>
+
+<h1 id="BUGS">BUGS</h1>
+
+<p>The certificates and CRLs in a context are used internally and should <b>not</b> be freed up until after the associated <b>X509_STORE_CTX</b> is freed. Copies should be made or reference counts increased instead.</p>
+
+<h1 id="RETURN-VALUES">RETURN VALUES</h1>
+
+<p>X509_STORE_CTX_new() returns an newly allocates context or <b>NULL</b> is an error occurred.</p>
+
+<p>X509_STORE_CTX_init() returns 1 for success or 0 if an error occurred.</p>
+
+<p>X509_STORE_CTX_get0_param() returns a pointer to an <b>X509_VERIFY_PARAM</b> structure or <b>NULL</b> if an error occurred.</p>
+
+<p>X509_STORE_CTX_cleanup(), X509_STORE_CTX_free(), X509_STORE_CTX_trusted_stack(), X509_STORE_CTX_set_cert(), X509_STORE_CTX_set_chain(), X509_STORE_CTX_set0_crls() and X509_STORE_CTX_set0_param() do not return values.</p>
+
+<p>X509_STORE_CTX_set_default() returns 1 for success or 0 if an error occurred.</p>
+
+<h1 id="SEE-ALSO">SEE ALSO</h1>
+
+<p><a href="../../crypto/X509_verify_cert.html">X509_verify_cert</a> <a href="../../crypto/X509_VERIFY_PARAM_set_flags.html">X509_VERIFY_PARAM_set_flags</a></p>
+
+<h1 id="HISTORY">HISTORY</h1>
+
+<p>X509_STORE_CTX_set0_crls() was first added to OpenSSL 1.0.0</p>
+
+
+</body>
+
+</html>
+
+

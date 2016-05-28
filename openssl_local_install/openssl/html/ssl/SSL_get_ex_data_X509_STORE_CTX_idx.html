@@ -1,0 +1,75 @@
+<?xml version="1.0" ?>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title></title>
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<link rev="made" href="mailto:root@localhost" />
+</head>
+
+<body style="background-color: white">
+
+
+
+<ul id="index">
+  <li><a href="#NAME">NAME</a></li>
+  <li><a href="#SYNOPSIS">SYNOPSIS</a></li>
+  <li><a href="#DESCRIPTION">DESCRIPTION</a></li>
+  <li><a href="#NOTES">NOTES</a></li>
+  <li><a href="#RETURN-VALUES">RETURN VALUES</a></li>
+  <li><a href="#EXAMPLES">EXAMPLES</a></li>
+  <li><a href="#SEE-ALSO">SEE ALSO</a></li>
+</ul>
+
+<h1 id="NAME">NAME</h1>
+
+<p>SSL_get_ex_data_X509_STORE_CTX_idx - get ex_data index to access SSL structure from X509_STORE_CTX</p>
+
+<h1 id="SYNOPSIS">SYNOPSIS</h1>
+
+<pre><code> #include &lt;openssl/ssl.h&gt;
+
+ int SSL_get_ex_data_X509_STORE_CTX_idx(void);</code></pre>
+
+<h1 id="DESCRIPTION">DESCRIPTION</h1>
+
+<p>SSL_get_ex_data_X509_STORE_CTX_idx() returns the index number under which the pointer to the SSL object is stored into the X509_STORE_CTX object.</p>
+
+<h1 id="NOTES">NOTES</h1>
+
+<p>Whenever a X509_STORE_CTX object is created for the verification of the peers certificate during a handshake, a pointer to the SSL object is stored into the X509_STORE_CTX object to identify the connection affected. To retrieve this pointer the X509_STORE_CTX_get_ex_data() function can be used with the correct index. This index is globally the same for all X509_STORE_CTX objects and can be retrieved using SSL_get_ex_data_X509_STORE_CTX_idx(). The index value is set when SSL_get_ex_data_X509_STORE_CTX_idx() is first called either by the application program directly or indirectly during other SSL setup functions or during the handshake.</p>
+
+<p>The value depends on other index values defined for X509_STORE_CTX objects before the SSL index is created.</p>
+
+<h1 id="RETURN-VALUES">RETURN VALUES</h1>
+
+<dl>
+
+<dt id="pod-0">&gt;=0</dt>
+<dd>
+
+<p>The index value to access the pointer.</p>
+
+</dd>
+<dt id="pod0">&lt;0</dt>
+<dd>
+
+<p>An error occurred, check the error stack for a detailed error message.</p>
+
+</dd>
+</dl>
+
+<h1 id="EXAMPLES">EXAMPLES</h1>
+
+<p>The index returned from SSL_get_ex_data_X509_STORE_CTX_idx() allows to access the SSL object for the connection to be accessed during the verify_callback() when checking the peers certificate. Please check the example in <a href="../../ssl/SSL_CTX_set_verify.html">SSL_CTX_set_verify</a>,</p>
+
+<h1 id="SEE-ALSO">SEE ALSO</h1>
+
+<p><a href="../../ssl/ssl.html">ssl</a>, <a href="../../ssl/SSL_CTX_set_verify.html">SSL_CTX_set_verify</a>, <a href="../../crypto/CRYPTO_set_ex_data.html">CRYPTO_set_ex_data</a></p>
+
+
+</body>
+
+</html>
+
+

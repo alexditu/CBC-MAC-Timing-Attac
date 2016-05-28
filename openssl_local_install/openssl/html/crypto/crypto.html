@@ -1,0 +1,105 @@
+<?xml version="1.0" ?>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title></title>
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<link rev="made" href="mailto:root@localhost" />
+</head>
+
+<body style="background-color: white">
+
+
+
+<ul id="index">
+  <li><a href="#NAME">NAME</a></li>
+  <li><a href="#SYNOPSIS">SYNOPSIS</a></li>
+  <li><a href="#DESCRIPTION">DESCRIPTION</a></li>
+  <li><a href="#OVERVIEW">OVERVIEW</a></li>
+  <li><a href="#NOTES">NOTES</a></li>
+  <li><a href="#SEE-ALSO">SEE ALSO</a></li>
+</ul>
+
+<h1 id="NAME">NAME</h1>
+
+<p>crypto - OpenSSL cryptographic library</p>
+
+<h1 id="SYNOPSIS">SYNOPSIS</h1>
+
+<h1 id="DESCRIPTION">DESCRIPTION</h1>
+
+<p>The OpenSSL <b>crypto</b> library implements a wide range of cryptographic algorithms used in various Internet standards. The services provided by this library are used by the OpenSSL implementations of SSL, TLS and S/MIME, and they have also been used to implement SSH, OpenPGP, and other cryptographic standards.</p>
+
+<h1 id="OVERVIEW">OVERVIEW</h1>
+
+<p><b>libcrypto</b> consists of a number of sub-libraries that implement the individual algorithms.</p>
+
+<p>The functionality includes symmetric encryption, public key cryptography and key agreement, certificate handling, cryptographic hash functions and a cryptographic pseudo-random number generator.</p>
+
+<dl>
+
+<dt id="SYMMETRIC-CIPHERS">SYMMETRIC CIPHERS</dt>
+<dd>
+
+<p><a href="../../crypto/blowfish.html">blowfish</a>, <a>cast</a>, <a href="../../crypto/des.html">des</a>, <a>idea</a>, <a>rc2</a>, <a href="../../crypto/rc4.html">rc4</a>, <a>rc5</a></p>
+
+</dd>
+<dt id="PUBLIC-KEY-CRYPTOGRAPHY-AND-KEY-AGREEMENT">PUBLIC KEY CRYPTOGRAPHY AND KEY AGREEMENT</dt>
+<dd>
+
+<p><a href="../../apps/dsa.html">dsa</a>, <a href="../../crypto/dh.html">dh</a>, <a href="../../apps/rsa.html">rsa</a></p>
+
+</dd>
+<dt id="CERTIFICATES">CERTIFICATES</dt>
+<dd>
+
+<p><a href="../../apps/x509.html">x509</a>, <a>x509v3</a></p>
+
+</dd>
+<dt id="AUTHENTICATION-CODES-HASH-FUNCTIONS">AUTHENTICATION CODES, HASH FUNCTIONS</dt>
+<dd>
+
+<p><a href="../../crypto/hmac.html">hmac</a>, <a>md2</a>, <a>md4</a>, <a href="../../crypto/md5.html">md5</a>, <a href="../../crypto/mdc2.html">mdc2</a>, <a href="../../crypto/ripemd.html">ripemd</a>, <a href="../../crypto/sha.html">sha</a></p>
+
+</dd>
+<dt id="AUXILIARY-FUNCTIONS">AUXILIARY FUNCTIONS</dt>
+<dd>
+
+<p><a href="../../crypto/err.html">err</a>, <a href="../../crypto/threads.html">threads</a>, <a href="../../apps/rand.html">rand</a>, <a href="../../crypto/OPENSSL_VERSION_NUMBER.html">OPENSSL_VERSION_NUMBER</a></p>
+
+</dd>
+<dt id="INPUT-OUTPUT-DATA-ENCODING">INPUT/OUTPUT, DATA ENCODING</dt>
+<dd>
+
+<p><a>asn1</a>, <a href="../../crypto/bio.html">bio</a>, <a href="../../crypto/evp.html">evp</a>, <a href="../../crypto/pem.html">pem</a>, <a href="../../apps/pkcs7.html">pkcs7</a>, <a href="../../apps/pkcs12.html">pkcs12</a></p>
+
+</dd>
+<dt id="INTERNAL-FUNCTIONS">INTERNAL FUNCTIONS</dt>
+<dd>
+
+<p><a href="../../crypto/bn.html">bn</a>, <a href="../../crypto/buffer.html">buffer</a>, <a href="../../crypto/lhash.html">lhash</a>, <a>objects</a>, <a>stack</a>, <a>txt_db</a></p>
+
+</dd>
+</dl>
+
+<h1 id="NOTES">NOTES</h1>
+
+<p>Some of the newer functions follow a naming convention using the numbers <b>0</b> and <b>1</b>. For example the functions:</p>
+
+<pre><code> int X509_CRL_add0_revoked(X509_CRL *crl, X509_REVOKED *rev);
+ int X509_add1_trust_object(X509 *x, ASN1_OBJECT *obj);</code></pre>
+
+<p>The <b>0</b> version uses the supplied structure pointer directly in the parent and it will be freed up when the parent is freed. In the above example <b>crl</b> would be freed but <b>rev</b> would not.</p>
+
+<p>The <b>1</b> function uses a copy of the supplied structure pointer (or in some cases increases its link count) in the parent and so both (<b>x</b> and <b>obj</b> above) should be freed up.</p>
+
+<h1 id="SEE-ALSO">SEE ALSO</h1>
+
+<p><a href="../../apps/openssl.html">openssl</a>, <a href="../../ssl/ssl.html">ssl</a></p>
+
+
+</body>
+
+</html>
+
+

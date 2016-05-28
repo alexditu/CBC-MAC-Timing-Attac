@@ -1,0 +1,89 @@
+<?xml version="1.0" ?>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title></title>
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<link rev="made" href="mailto:root@localhost" />
+</head>
+
+<body style="background-color: white">
+
+
+
+<ul id="index">
+  <li><a href="#NAME">NAME</a></li>
+  <li><a href="#SYNOPSIS">SYNOPSIS</a></li>
+  <li><a href="#DESCRIPTION">DESCRIPTION</a></li>
+  <li><a href="#RETURN-VALUES">RETURN VALUES</a></li>
+  <li><a href="#SEE-ALSO">SEE ALSO</a></li>
+  <li><a href="#HISTORY">HISTORY</a></li>
+</ul>
+
+<h1 id="NAME">NAME</h1>
+
+<p>BN_mod_mul_reciprocal, BN_div_recp, BN_RECP_CTX_new, BN_RECP_CTX_init, BN_RECP_CTX_free, BN_RECP_CTX_set - modular multiplication using reciprocal</p>
+
+<h1 id="SYNOPSIS">SYNOPSIS</h1>
+
+<pre><code> #include &lt;openssl/bn.h&gt;
+
+ BN_RECP_CTX *BN_RECP_CTX_new(void);
+ void BN_RECP_CTX_init(BN_RECP_CTX *recp);
+ void BN_RECP_CTX_free(BN_RECP_CTX *recp);
+
+ int BN_RECP_CTX_set(BN_RECP_CTX *recp, const BIGNUM *m, BN_CTX *ctx);
+
+ int BN_div_recp(BIGNUM *dv, BIGNUM *rem, BIGNUM *a, BN_RECP_CTX *recp,
+        BN_CTX *ctx);
+
+ int BN_mod_mul_reciprocal(BIGNUM *r, BIGNUM *a, BIGNUM *b,
+        BN_RECP_CTX *recp, BN_CTX *ctx);</code></pre>
+
+<h1 id="DESCRIPTION">DESCRIPTION</h1>
+
+<p>BN_mod_mul_reciprocal() can be used to perform an efficient <a>BN_mod_mul</a> operation when the operation will be performed repeatedly with the same modulus. It computes <b>r</b>=(<b>a</b>*<b>b</b>)%<b>m</b> using <b>recp</b>=1/<b>m</b>, which is set as described below. <b>ctx</b> is a previously allocated <b>BN_CTX</b> used for temporary variables.</p>
+
+<p>BN_RECP_CTX_new() allocates and initializes a <b>BN_RECP</b> structure. BN_RECP_CTX_init() initializes an existing uninitialized <b>BN_RECP</b>.</p>
+
+<p>BN_RECP_CTX_free() frees the components of the <b>BN_RECP</b>, and, if it was created by BN_RECP_CTX_new(), also the structure itself.</p>
+
+<p>BN_RECP_CTX_set() stores <b>m</b> in <b>recp</b> and sets it up for computing 1/<b>m</b> and shifting it left by BN_num_bits(<b>m</b>)+1 to make it an integer. The result and the number of bits it was shifted left will later be stored in <b>recp</b>.</p>
+
+<p>BN_div_recp() divides <b>a</b> by <b>m</b> using <b>recp</b>. It places the quotient in <b>dv</b> and the remainder in <b>rem</b>.</p>
+
+<p>The <b>BN_RECP_CTX</b> structure is defined as follows:</p>
+
+<pre><code> typedef struct bn_recp_ctx_st
+        {
+        BIGNUM N;       /* the divisor */
+        BIGNUM Nr;      /* the reciprocal */
+        int num_bits;
+        int shift;
+        int flags;
+        } BN_RECP_CTX;</code></pre>
+
+<p>It cannot be shared between threads.</p>
+
+<h1 id="RETURN-VALUES">RETURN VALUES</h1>
+
+<p>BN_RECP_CTX_new() returns the newly allocated <b>BN_RECP_CTX</b>, and NULL on error.</p>
+
+<p>BN_RECP_CTX_init() and BN_RECP_CTX_free() have no return values.</p>
+
+<p>For the other functions, 1 is returned for success, 0 on error. The error codes can be obtained by <a href="../../crypto/ERR_get_error.html">ERR_get_error</a>.</p>
+
+<h1 id="SEE-ALSO">SEE ALSO</h1>
+
+<p><a href="../../crypto/bn.html">bn</a>, <a href="../../crypto/ERR_get_error.html">ERR_get_error</a>, <a href="../../crypto/BN_add.html">BN_add</a>, <a href="../../crypto/BN_CTX_new.html">BN_CTX_new</a></p>
+
+<h1 id="HISTORY">HISTORY</h1>
+
+<p><b>BN_RECP_CTX</b> was added in SSLeay 0.9.0. Before that, the function BN_reciprocal() was used instead, and the BN_mod_mul_reciprocal() arguments were different.</p>
+
+
+</body>
+
+</html>
+
+

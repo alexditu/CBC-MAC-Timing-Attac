@@ -1,0 +1,63 @@
+<?xml version="1.0" ?>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title></title>
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<link rev="made" href="mailto:root@localhost" />
+</head>
+
+<body style="background-color: white">
+
+
+
+<ul id="index">
+  <li><a href="#NAME">NAME</a></li>
+  <li><a href="#SYNOPSIS">SYNOPSIS</a></li>
+  <li><a href="#DESCRIPTION">DESCRIPTION</a></li>
+  <li><a href="#RETURN-VALUES">RETURN VALUES</a></li>
+  <li><a href="#SEE-ALSO">SEE ALSO</a></li>
+  <li><a href="#HISTORY">HISTORY</a></li>
+</ul>
+
+<h1 id="NAME">NAME</h1>
+
+<p>ERR_load_crypto_strings, SSL_load_error_strings, ERR_free_strings - load and free error strings</p>
+
+<h1 id="SYNOPSIS">SYNOPSIS</h1>
+
+<pre><code> #include &lt;openssl/err.h&gt;
+
+ void ERR_load_crypto_strings(void);
+ void ERR_free_strings(void);
+
+ #include &lt;openssl/ssl.h&gt;
+
+ void SSL_load_error_strings(void);</code></pre>
+
+<h1 id="DESCRIPTION">DESCRIPTION</h1>
+
+<p>ERR_load_crypto_strings() registers the error strings for all <b>libcrypto</b> functions. SSL_load_error_strings() does the same, but also registers the <b>libssl</b> error strings.</p>
+
+<p>One of these functions should be called before generating textual error messages. However, this is not required when memory usage is an issue.</p>
+
+<p>ERR_free_strings() frees all previously loaded error strings.</p>
+
+<h1 id="RETURN-VALUES">RETURN VALUES</h1>
+
+<p>ERR_load_crypto_strings(), SSL_load_error_strings() and ERR_free_strings() return no values.</p>
+
+<h1 id="SEE-ALSO">SEE ALSO</h1>
+
+<p><a href="../../crypto/err.html">err</a>, <a href="../../crypto/ERR_error_string.html">ERR_error_string</a></p>
+
+<h1 id="HISTORY">HISTORY</h1>
+
+<p>ERR_load_error_strings(), SSL_load_error_strings() and ERR_free_strings() are available in all versions of SSLeay and OpenSSL.</p>
+
+
+</body>
+
+</html>
+
+

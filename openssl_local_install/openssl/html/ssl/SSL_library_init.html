@@ -1,0 +1,76 @@
+<?xml version="1.0" ?>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title></title>
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<link rev="made" href="mailto:root@localhost" />
+</head>
+
+<body style="background-color: white">
+
+
+
+<ul id="index">
+  <li><a href="#NAME">NAME</a></li>
+  <li><a href="#SYNOPSIS">SYNOPSIS</a></li>
+  <li><a href="#DESCRIPTION">DESCRIPTION</a></li>
+  <li><a href="#NOTES">NOTES</a></li>
+  <li><a href="#WARNING">WARNING</a></li>
+  <li><a href="#EXAMPLES">EXAMPLES</a></li>
+  <li><a href="#RETURN-VALUES">RETURN VALUES</a></li>
+  <li><a href="#NOTES1">NOTES</a></li>
+  <li><a href="#SEE-ALSO">SEE ALSO</a></li>
+</ul>
+
+<h1 id="NAME">NAME</h1>
+
+<p>SSL_library_init, OpenSSL_add_ssl_algorithms, SSLeay_add_ssl_algorithms - initialize SSL library by registering algorithms</p>
+
+<h1 id="SYNOPSIS">SYNOPSIS</h1>
+
+<pre><code> #include &lt;openssl/ssl.h&gt;
+
+ int SSL_library_init(void);
+ #define OpenSSL_add_ssl_algorithms()    SSL_library_init()
+ #define SSLeay_add_ssl_algorithms()     SSL_library_init()</code></pre>
+
+<h1 id="DESCRIPTION">DESCRIPTION</h1>
+
+<p>SSL_library_init() registers the available SSL/TLS ciphers and digests.</p>
+
+<p>OpenSSL_add_ssl_algorithms() and SSLeay_add_ssl_algorithms() are synonyms for SSL_library_init().</p>
+
+<h1 id="NOTES">NOTES</h1>
+
+<p>SSL_library_init() must be called before any other action takes place. SSL_library_init() is not reentrant.</p>
+
+<h1 id="WARNING">WARNING</h1>
+
+<p>SSL_library_init() adds ciphers and digests used directly and indirectly by SSL/TLS.</p>
+
+<h1 id="EXAMPLES">EXAMPLES</h1>
+
+<p>A typical TLS/SSL application will start with the library initialization, and provide readable error messages.</p>
+
+<pre><code> SSL_load_error_strings();                /* readable error messages */
+ SSL_library_init();                      /* initialize library */</code></pre>
+
+<h1 id="RETURN-VALUES">RETURN VALUES</h1>
+
+<p>SSL_library_init() always returns &quot;1&quot;, so it is safe to discard the return value.</p>
+
+<h1 id="NOTES1">NOTES</h1>
+
+<p>OpenSSL 0.9.8o and 1.0.0a and later added SHA2 algorithms to SSL_library_init(). Applications which need to use SHA2 in earlier versions of OpenSSL should call OpenSSL_add_all_algorithms() as well.</p>
+
+<h1 id="SEE-ALSO">SEE ALSO</h1>
+
+<p><a href="../../ssl/ssl.html">ssl</a>, <a>SSL_load_error_strings</a>, <a href="../../crypto/RAND_add.html">RAND_add</a></p>
+
+
+</body>
+
+</html>
+
+

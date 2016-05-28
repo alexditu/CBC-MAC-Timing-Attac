@@ -1,0 +1,60 @@
+<?xml version="1.0" ?>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title></title>
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<link rev="made" href="mailto:root@localhost" />
+</head>
+
+<body style="background-color: white">
+
+
+
+<ul id="index">
+  <li><a href="#NAME">NAME</a></li>
+  <li><a href="#SYNOPSIS">SYNOPSIS</a></li>
+  <li><a href="#DESCRIPTION">DESCRIPTION</a></li>
+  <li><a href="#RETURN-VALUES">RETURN VALUES</a></li>
+  <li><a href="#SEE-ALSO">SEE ALSO</a></li>
+  <li><a href="#HISTORY">HISTORY</a></li>
+</ul>
+
+<h1 id="NAME">NAME</h1>
+
+<p>ERR_set_mark, ERR_pop_to_mark - set marks and pop errors until mark</p>
+
+<h1 id="SYNOPSIS">SYNOPSIS</h1>
+
+<pre><code> #include &lt;openssl/err.h&gt;
+
+ int ERR_set_mark(void);
+
+ int ERR_pop_to_mark(void);</code></pre>
+
+<h1 id="DESCRIPTION">DESCRIPTION</h1>
+
+<p>ERR_set_mark() sets a mark on the current topmost error record if there is one.</p>
+
+<p>ERR_pop_to_mark() will pop the top of the error stack until a mark is found. The mark is then removed. If there is no mark, the whole stack is removed.</p>
+
+<h1 id="RETURN-VALUES">RETURN VALUES</h1>
+
+<p>ERR_set_mark() returns 0 if the error stack is empty, otherwise 1.</p>
+
+<p>ERR_pop_to_mark() returns 0 if there was no mark in the error stack, which implies that the stack became empty, otherwise 1.</p>
+
+<h1 id="SEE-ALSO">SEE ALSO</h1>
+
+<p><a href="../../crypto/err.html">err</a></p>
+
+<h1 id="HISTORY">HISTORY</h1>
+
+<p>ERR_set_mark() and ERR_pop_to_mark() were added in OpenSSL 0.9.8.</p>
+
+
+</body>
+
+</html>
+
+

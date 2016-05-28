@@ -1,0 +1,58 @@
+<?xml version="1.0" ?>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title></title>
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<link rev="made" href="mailto:root@localhost" />
+</head>
+
+<body style="background-color: white">
+
+
+
+<ul id="index">
+  <li><a href="#NAME">NAME</a></li>
+  <li><a href="#SYNOPSIS">SYNOPSIS</a></li>
+  <li><a href="#DESCRIPTION">DESCRIPTION</a></li>
+  <li><a href="#SEE-ALSO">SEE ALSO</a></li>
+  <li><a href="#HISTORY">HISTORY</a></li>
+</ul>
+
+<h1 id="NAME">NAME</h1>
+
+<p>d2i_X509_CRL, i2d_X509_CRL, d2i_X509_CRL_bio, d2i_509_CRL_fp, i2d_X509_CRL_bio, i2d_X509_CRL_fp - PKCS#10 certificate request functions.</p>
+
+<h1 id="SYNOPSIS">SYNOPSIS</h1>
+
+<pre><code> #include &lt;openssl/x509.h&gt;
+
+ X509_CRL *d2i_X509_CRL(X509_CRL **a, const unsigned char **pp, long length);
+ int i2d_X509_CRL(X509_CRL *a, unsigned char **pp);
+
+ X509_CRL *d2i_X509_CRL_bio(BIO *bp, X509_CRL **x);
+ X509_CRL *d2i_X509_CRL_fp(FILE *fp, X509_CRL **x);
+
+ int i2d_X509_CRL_bio(BIO *bp, X509_CRL *x);
+ int i2d_X509_CRL_fp(FILE *fp, X509_CRL *x);</code></pre>
+
+<h1 id="DESCRIPTION">DESCRIPTION</h1>
+
+<p>These functions decode and encode an X509 CRL (certificate revocation list).</p>
+
+<p>Othewise the functions behave in a similar way to d2i_X509() and i2d_X509() described in the <a href="../../crypto/d2i_X509.html">d2i_X509</a> manual page.</p>
+
+<h1 id="SEE-ALSO">SEE ALSO</h1>
+
+<p><a href="../../crypto/d2i_X509.html">d2i_X509</a></p>
+
+<h1 id="HISTORY">HISTORY</h1>
+
+<p>TBA</p>
+
+
+</body>
+
+</html>
+
+

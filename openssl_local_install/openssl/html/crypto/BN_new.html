@@ -1,0 +1,68 @@
+<?xml version="1.0" ?>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title></title>
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<link rev="made" href="mailto:root@localhost" />
+</head>
+
+<body style="background-color: white">
+
+
+
+<ul id="index">
+  <li><a href="#NAME">NAME</a></li>
+  <li><a href="#SYNOPSIS">SYNOPSIS</a></li>
+  <li><a href="#DESCRIPTION">DESCRIPTION</a></li>
+  <li><a href="#RETURN-VALUES">RETURN VALUES</a></li>
+  <li><a href="#SEE-ALSO">SEE ALSO</a></li>
+  <li><a href="#HISTORY">HISTORY</a></li>
+</ul>
+
+<h1 id="NAME">NAME</h1>
+
+<p>BN_new, BN_init, BN_clear, BN_free, BN_clear_free - allocate and free BIGNUMs</p>
+
+<h1 id="SYNOPSIS">SYNOPSIS</h1>
+
+<pre><code> #include &lt;openssl/bn.h&gt;
+
+ BIGNUM *BN_new(void);
+
+ void BN_init(BIGNUM *);
+
+ void BN_clear(BIGNUM *a);
+
+ void BN_free(BIGNUM *a);
+
+ void BN_clear_free(BIGNUM *a);</code></pre>
+
+<h1 id="DESCRIPTION">DESCRIPTION</h1>
+
+<p>BN_new() allocates and initializes a <b>BIGNUM</b> structure. BN_init() initializes an existing uninitialized <b>BIGNUM</b>.</p>
+
+<p>BN_clear() is used to destroy sensitive data such as keys when they are no longer needed. It erases the memory used by <b>a</b> and sets it to the value 0.</p>
+
+<p>BN_free() frees the components of the <b>BIGNUM</b>, and if it was created by BN_new(), also the structure itself. BN_clear_free() additionally overwrites the data before the memory is returned to the system.</p>
+
+<h1 id="RETURN-VALUES">RETURN VALUES</h1>
+
+<p>BN_new() returns a pointer to the <b>BIGNUM</b>. If the allocation fails, it returns <b>NULL</b> and sets an error code that can be obtained by <a href="../../crypto/ERR_get_error.html">ERR_get_error</a>.</p>
+
+<p>BN_init(), BN_clear(), BN_free() and BN_clear_free() have no return values.</p>
+
+<h1 id="SEE-ALSO">SEE ALSO</h1>
+
+<p><a href="../../crypto/bn.html">bn</a>, <a href="../../crypto/ERR_get_error.html">ERR_get_error</a></p>
+
+<h1 id="HISTORY">HISTORY</h1>
+
+<p>BN_new(), BN_clear(), BN_free() and BN_clear_free() are available in all versions on SSLeay and OpenSSL. BN_init() was added in SSLeay 0.9.1b.</p>
+
+
+</body>
+
+</html>
+
+

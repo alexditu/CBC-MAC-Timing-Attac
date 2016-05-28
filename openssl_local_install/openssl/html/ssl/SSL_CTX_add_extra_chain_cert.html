@@ -1,0 +1,54 @@
+<?xml version="1.0" ?>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title></title>
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<link rev="made" href="mailto:root@localhost" />
+</head>
+
+<body style="background-color: white">
+
+
+
+<ul id="index">
+  <li><a href="#NAME">NAME</a></li>
+  <li><a href="#SYNOPSIS">SYNOPSIS</a></li>
+  <li><a href="#DESCRIPTION">DESCRIPTION</a></li>
+  <li><a href="#NOTES">NOTES</a></li>
+  <li><a href="#RETURN-VALUES">RETURN VALUES</a></li>
+  <li><a href="#SEE-ALSO">SEE ALSO</a></li>
+</ul>
+
+<h1 id="NAME">NAME</h1>
+
+<p>SSL_CTX_add_extra_chain_cert - add certificate to chain</p>
+
+<h1 id="SYNOPSIS">SYNOPSIS</h1>
+
+<pre><code> #include &lt;openssl/ssl.h&gt;
+
+ long SSL_CTX_add_extra_chain_cert(SSL_CTX ctx, X509 *x509)</code></pre>
+
+<h1 id="DESCRIPTION">DESCRIPTION</h1>
+
+<p>SSL_CTX_add_extra_chain_cert() adds the certificate <b>x509</b> to the certificate chain presented together with the certificate. Several certificates can be added one after the other.</p>
+
+<h1 id="NOTES">NOTES</h1>
+
+<p>When constructing the certificate chain, the chain will be formed from these certificates explicitly specified. If no chain is specified, the library will try to complete the chain from the available CA certificates in the trusted CA storage, see <a href="../../ssl/SSL_CTX_load_verify_locations.html">SSL_CTX_load_verify_locations</a>.</p>
+
+<h1 id="RETURN-VALUES">RETURN VALUES</h1>
+
+<p>SSL_CTX_add_extra_chain_cert() returns 1 on success. Check out the error stack to find out the reason for failure otherwise.</p>
+
+<h1 id="SEE-ALSO">SEE ALSO</h1>
+
+<p><a href="../../ssl/ssl.html">ssl</a>, <a href="../../ssl/SSL_CTX_use_certificate.html">SSL_CTX_use_certificate</a>, <a href="../../ssl/SSL_CTX_set_client_cert_cb.html">SSL_CTX_set_client_cert_cb</a>, <a href="../../ssl/SSL_CTX_load_verify_locations.html">SSL_CTX_load_verify_locations</a></p>
+
+
+</body>
+
+</html>
+
+

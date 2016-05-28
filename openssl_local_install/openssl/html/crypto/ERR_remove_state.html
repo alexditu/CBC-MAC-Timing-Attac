@@ -1,0 +1,56 @@
+<?xml version="1.0" ?>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title></title>
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<link rev="made" href="mailto:root@localhost" />
+</head>
+
+<body style="background-color: white">
+
+
+
+<ul id="index">
+  <li><a href="#NAME">NAME</a></li>
+  <li><a href="#SYNOPSIS">SYNOPSIS</a></li>
+  <li><a href="#DESCRIPTION">DESCRIPTION</a></li>
+  <li><a href="#RETURN-VALUE">RETURN VALUE</a></li>
+  <li><a href="#SEE-ALSO">SEE ALSO</a></li>
+  <li><a href="#HISTORY">HISTORY</a></li>
+</ul>
+
+<h1 id="NAME">NAME</h1>
+
+<p>ERR_remove_state - free a thread&#39;s error queue</p>
+
+<h1 id="SYNOPSIS">SYNOPSIS</h1>
+
+<pre><code> #include &lt;openssl/err.h&gt;
+
+ void ERR_remove_state(unsigned long pid);</code></pre>
+
+<h1 id="DESCRIPTION">DESCRIPTION</h1>
+
+<p>ERR_remove_state() frees the error queue associated with thread <b>pid</b>. If <b>pid</b> == 0, the current thread will have its error queue removed.</p>
+
+<p>Since error queue data structures are allocated automatically for new threads, they must be freed when threads are terminated in order to avoid memory leaks.</p>
+
+<h1 id="RETURN-VALUE">RETURN VALUE</h1>
+
+<p>ERR_remove_state() returns no value.</p>
+
+<h1 id="SEE-ALSO">SEE ALSO</h1>
+
+<p><a href="../../crypto/err.html">err</a></p>
+
+<h1 id="HISTORY">HISTORY</h1>
+
+<p>ERR_remove_state() is available in all versions of SSLeay and OpenSSL.</p>
+
+
+</body>
+
+</html>
+
+

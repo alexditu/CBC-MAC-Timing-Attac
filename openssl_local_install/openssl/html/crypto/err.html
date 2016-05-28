@@ -1,0 +1,157 @@
+<?xml version="1.0" ?>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title></title>
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<link rev="made" href="mailto:root@localhost" />
+</head>
+
+<body style="background-color: white">
+
+
+
+<ul id="index">
+  <li><a href="#NAME">NAME</a></li>
+  <li><a href="#SYNOPSIS">SYNOPSIS</a></li>
+  <li><a href="#DESCRIPTION">DESCRIPTION</a></li>
+  <li><a href="#ADDING-NEW-ERROR-CODES-TO-OPENSSL">ADDING NEW ERROR CODES TO OPENSSL</a>
+    <ul>
+      <li><a href="#Reporting-errors">Reporting errors</a></li>
+      <li><a href="#Adding-new-libraries">Adding new libraries</a></li>
+    </ul>
+  </li>
+  <li><a href="#USING-ERROR-CODES-IN-EXTERNAL-LIBRARIES">USING ERROR CODES IN EXTERNAL LIBRARIES</a></li>
+  <li><a href="#INTERNALS">INTERNALS</a></li>
+  <li><a href="#SEE-ALSO">SEE ALSO</a></li>
+</ul>
+
+<h1 id="NAME">NAME</h1>
+
+<p>err - error codes</p>
+
+<h1 id="SYNOPSIS">SYNOPSIS</h1>
+
+<pre><code> #include &lt;openssl/err.h&gt;
+
+ unsigned long ERR_get_error(void);
+ unsigned long ERR_peek_error(void);
+ unsigned long ERR_get_error_line(const char **file, int *line);
+ unsigned long ERR_peek_error_line(const char **file, int *line);
+ unsigned long ERR_get_error_line_data(const char **file, int *line,
+         const char **data, int *flags);
+ unsigned long ERR_peek_error_line_data(const char **file, int *line,
+         const char **data, int *flags);
+
+ int ERR_GET_LIB(unsigned long e);
+ int ERR_GET_FUNC(unsigned long e);
+ int ERR_GET_REASON(unsigned long e);
+
+ void ERR_clear_error(void);
+
+ char *ERR_error_string(unsigned long e, char *buf);
+ const char *ERR_lib_error_string(unsigned long e);
+ const char *ERR_func_error_string(unsigned long e);
+ const char *ERR_reason_error_string(unsigned long e);
+
+ void ERR_print_errors(BIO *bp);
+ void ERR_print_errors_fp(FILE *fp);
+
+ void ERR_load_crypto_strings(void);
+ void ERR_free_strings(void);
+
+ void ERR_remove_state(unsigned long pid);
+
+ void ERR_put_error(int lib, int func, int reason, const char *file,
+         int line);
+ void ERR_add_error_data(int num, ...);
+
+ void ERR_load_strings(int lib,ERR_STRING_DATA str[]);
+ unsigned long ERR_PACK(int lib, int func, int reason);
+ int ERR_get_next_error_library(void);</code></pre>
+
+<h1 id="DESCRIPTION">DESCRIPTION</h1>
+
+<p>When a call to the OpenSSL library fails, this is usually signalled by the return value, and an error code is stored in an error queue associated with the current thread. The <b>err</b> library provides functions to obtain these error codes and textual error messages.</p>
+
+<p>The <a href="../../crypto/ERR_get_error.html">ERR_get_error</a> manpage describes how to access error codes.</p>
+
+<p>Error codes contain information about where the error occurred, and what went wrong. <a href="../../crypto/ERR_GET_LIB.html">ERR_GET_LIB</a> describes how to extract this information. A method to obtain human-readable error messages is described in <a href="../../crypto/ERR_error_string.html">ERR_error_string</a>.</p>
+
+<p><a href="../../crypto/ERR_clear_error.html">ERR_clear_error</a> can be used to clear the error queue.</p>
+
+<p>Note that <a href="../../crypto/ERR_remove_state.html">ERR_remove_state</a> should be used to avoid memory leaks when threads are terminated.</p>
+
+<h1 id="ADDING-NEW-ERROR-CODES-TO-OPENSSL">ADDING NEW ERROR CODES TO OPENSSL</h1>
+
+<p>See <a href="http://man.he.net/man3/ERR_put_error">ERR_put_error(3)</a> if you want to record error codes in the OpenSSL error system from within your application.</p>
+
+<p>The remainder of this section is of interest only if you want to add new error codes to OpenSSL or add error codes from external libraries.</p>
+
+<h2 id="Reporting-errors">Reporting errors</h2>
+
+<p>Each sub-library has a specific macro XXXerr() that is used to report errors. Its first argument is a function code <b>XXX_F_...</b>, the second argument is a reason code <b>XXX_R_...</b>. Function codes are derived from the function names; reason codes consist of textual error descriptions. For example, the function ssl23_read() reports a &quot;handshake failure&quot; as follows:</p>
+
+<pre><code> SSLerr(SSL_F_SSL23_READ, SSL_R_SSL_HANDSHAKE_FAILURE);</code></pre>
+
+<p>Function and reason codes should consist of upper case characters, numbers and underscores only. The error file generation script translates function codes into function names by looking in the header files for an appropriate function name, if none is found it just uses the capitalized form such as &quot;SSL23_READ&quot; in the above example.</p>
+
+<p>The trailing section of a reason code (after the &quot;_R_&quot;) is translated into lower case and underscores changed to spaces.</p>
+
+<p>When you are using new function or reason codes, run <b>make errors</b>. The necessary <b>#define</b>s will then automatically be added to the sub-library&#39;s header file.</p>
+
+<p>Although a library will normally report errors using its own specific XXXerr macro, another library&#39;s macro can be used. This is normally only done when a library wants to include ASN1 code which must use the ASN1err() macro.</p>
+
+<h2 id="Adding-new-libraries">Adding new libraries</h2>
+
+<p>When adding a new sub-library to OpenSSL, assign it a library number <b>ERR_LIB_XXX</b>, define a macro XXXerr() (both in <b>err.h</b>), add its name to <b>ERR_str_libraries[]</b> (in <b>crypto/err/err.c</b>), and add <code>ERR_load_XXX_strings()</code> to the ERR_load_crypto_strings() function (in <b>crypto/err/err_all.c</b>). Finally, add an entry</p>
+
+<pre><code> L      XXX     xxx.h   xxx_err.c</code></pre>
+
+<p>to <b>crypto/err/openssl.ec</b>, and add <b>xxx_err.c</b> to the Makefile. Running <b>make errors</b> will then generate a file <b>xxx_err.c</b>, and add all error codes used in the library to <b>xxx.h</b>.</p>
+
+<p>Additionally the library include file must have a certain form. Typically it will initially look like this:</p>
+
+<pre><code> #ifndef HEADER_XXX_H
+ #define HEADER_XXX_H
+
+ #ifdef __cplusplus
+ extern &quot;C&quot; {
+ #endif
+
+ /* Include files */
+
+ #include &lt;openssl/bio.h&gt;
+ #include &lt;openssl/x509.h&gt;
+
+ /* Macros, structures and function prototypes */
+
+
+ /* BEGIN ERROR CODES */</code></pre>
+
+<p>The <b>BEGIN ERROR CODES</b> sequence is used by the error code generation script as the point to place new error codes, any text after this point will be overwritten when <b>make errors</b> is run. The closing #endif etc will be automatically added by the script.</p>
+
+<p>The generated C error code file <b>xxx_err.c</b> will load the header files <b>stdio.h</b>, <b>openssl/err.h</b> and <b>openssl/xxx.h</b> so the header file must load any additional header files containing any definitions it uses.</p>
+
+<h1 id="USING-ERROR-CODES-IN-EXTERNAL-LIBRARIES">USING ERROR CODES IN EXTERNAL LIBRARIES</h1>
+
+<p>It is also possible to use OpenSSL&#39;s error code scheme in external libraries. The library needs to load its own codes and call the OpenSSL error code insertion script <b>mkerr.pl</b> explicitly to add codes to the header file and generate the C error code file. This will normally be done if the external library needs to generate new ASN1 structures but it can also be used to add more general purpose error code handling.</p>
+
+<p>TBA more details</p>
+
+<h1 id="INTERNALS">INTERNALS</h1>
+
+<p>The error queues are stored in a hash table with one <b>ERR_STATE</b> entry for each pid. ERR_get_state() returns the current thread&#39;s <b>ERR_STATE</b>. An <b>ERR_STATE</b> can hold up to <b>ERR_NUM_ERRORS</b> error codes. When more error codes are added, the old ones are overwritten, on the assumption that the most recent errors are most important.</p>
+
+<p>Error strings are also stored in hash table. The hash tables can be obtained by calling ERR_get_err_state_table(void) and ERR_get_string_table(void) respectively.</p>
+
+<h1 id="SEE-ALSO">SEE ALSO</h1>
+
+<p><a>CRYPTO_set_id_callback</a>, <a>CRYPTO_set_locking_callback</a>, <a href="../../crypto/ERR_get_error.html">ERR_get_error</a>, <a href="../../crypto/ERR_GET_LIB.html">ERR_GET_LIB</a>, <a href="../../crypto/ERR_clear_error.html">ERR_clear_error</a>, <a href="../../crypto/ERR_error_string.html">ERR_error_string</a>, <a href="../../crypto/ERR_print_errors.html">ERR_print_errors</a>, <a href="../../crypto/ERR_load_crypto_strings.html">ERR_load_crypto_strings</a>, <a href="../../crypto/ERR_remove_state.html">ERR_remove_state</a>, <a href="../../crypto/ERR_put_error.html">ERR_put_error</a>, <a href="../../crypto/ERR_load_strings.html">ERR_load_strings</a>, <a href="../../ssl/SSL_get_error.html">SSL_get_error</a></p>
+
+
+</body>
+
+</html>
+
+

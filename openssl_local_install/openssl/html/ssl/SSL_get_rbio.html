@@ -1,0 +1,66 @@
+<?xml version="1.0" ?>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title></title>
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<link rev="made" href="mailto:root@localhost" />
+</head>
+
+<body style="background-color: white">
+
+
+
+<ul id="index">
+  <li><a href="#NAME">NAME</a></li>
+  <li><a href="#SYNOPSIS">SYNOPSIS</a></li>
+  <li><a href="#DESCRIPTION">DESCRIPTION</a></li>
+  <li><a href="#RETURN-VALUES">RETURN VALUES</a></li>
+  <li><a href="#SEE-ALSO">SEE ALSO</a></li>
+</ul>
+
+<h1 id="NAME">NAME</h1>
+
+<p>SSL_get_rbio - get BIO linked to an SSL object</p>
+
+<h1 id="SYNOPSIS">SYNOPSIS</h1>
+
+<pre><code> #include &lt;openssl/ssl.h&gt;
+
+ BIO *SSL_get_rbio(SSL *ssl);
+ BIO *SSL_get_wbio(SSL *ssl);</code></pre>
+
+<h1 id="DESCRIPTION">DESCRIPTION</h1>
+
+<p>SSL_get_rbio() and SSL_get_wbio() return pointers to the BIOs for the read or the write channel, which can be different. The reference count of the BIO is not incremented.</p>
+
+<h1 id="RETURN-VALUES">RETURN VALUES</h1>
+
+<p>The following return values can occur:</p>
+
+<dl>
+
+<dt id="NULL">NULL</dt>
+<dd>
+
+<p>No BIO was connected to the SSL object</p>
+
+</dd>
+<dt id="Any-other-pointer">Any other pointer</dt>
+<dd>
+
+<p>The BIO linked to <b>ssl</b>.</p>
+
+</dd>
+</dl>
+
+<h1 id="SEE-ALSO">SEE ALSO</h1>
+
+<p><a href="../../ssl/SSL_set_bio.html">SSL_set_bio</a>, <a href="../../ssl/ssl.html">ssl</a> , <a href="../../crypto/bio.html">bio</a></p>
+
+
+</body>
+
+</html>
+
+

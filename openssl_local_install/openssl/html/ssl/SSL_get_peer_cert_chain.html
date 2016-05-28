@@ -1,0 +1,72 @@
+<?xml version="1.0" ?>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title></title>
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<link rev="made" href="mailto:root@localhost" />
+</head>
+
+<body style="background-color: white">
+
+
+
+<ul id="index">
+  <li><a href="#NAME">NAME</a></li>
+  <li><a href="#SYNOPSIS">SYNOPSIS</a></li>
+  <li><a href="#DESCRIPTION">DESCRIPTION</a></li>
+  <li><a href="#NOTES">NOTES</a></li>
+  <li><a href="#RETURN-VALUES">RETURN VALUES</a></li>
+  <li><a href="#SEE-ALSO">SEE ALSO</a></li>
+</ul>
+
+<h1 id="NAME">NAME</h1>
+
+<p>SSL_get_peer_cert_chain - get the X509 certificate chain of the peer</p>
+
+<h1 id="SYNOPSIS">SYNOPSIS</h1>
+
+<pre><code> #include &lt;openssl/ssl.h&gt;
+
+ STACKOF(X509) *SSL_get_peer_cert_chain(const SSL *ssl);</code></pre>
+
+<h1 id="DESCRIPTION">DESCRIPTION</h1>
+
+<p>SSL_get_peer_cert_chain() returns a pointer to STACKOF(X509) certificates forming the certificate chain of the peer. If called on the client side, the stack also contains the peer&#39;s certificate; if called on the server side, the peer&#39;s certificate must be obtained separately using <a href="../../ssl/SSL_get_peer_certificate.html">SSL_get_peer_certificate</a>. If the peer did not present a certificate, NULL is returned.</p>
+
+<h1 id="NOTES">NOTES</h1>
+
+<p>The peer certificate chain is not necessarily available after reusing a session, in which case a NULL pointer is returned.</p>
+
+<p>The reference count of the STACKOF(X509) object is not incremented. If the corresponding session is freed, the pointer must not be used any longer.</p>
+
+<h1 id="RETURN-VALUES">RETURN VALUES</h1>
+
+<p>The following return values can occur:</p>
+
+<dl>
+
+<dt id="NULL">NULL</dt>
+<dd>
+
+<p>No certificate was presented by the peer or no connection was established or the certificate chain is no longer available when a session is reused.</p>
+
+</dd>
+<dt id="Pointer-to-a-STACKOF-X509">Pointer to a STACKOF(X509)</dt>
+<dd>
+
+<p>The return value points to the certificate chain presented by the peer.</p>
+
+</dd>
+</dl>
+
+<h1 id="SEE-ALSO">SEE ALSO</h1>
+
+<p><a href="../../ssl/ssl.html">ssl</a>, <a href="../../ssl/SSL_get_peer_certificate.html">SSL_get_peer_certificate</a></p>
+
+
+</body>
+
+</html>
+
+

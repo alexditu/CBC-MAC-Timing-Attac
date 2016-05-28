@@ -1,0 +1,93 @@
+<?xml version="1.0" ?>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title></title>
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<link rev="made" href="mailto:root@localhost" />
+</head>
+
+<body style="background-color: white">
+
+
+
+<ul id="index">
+  <li><a href="#NAME">NAME</a></li>
+  <li><a href="#SYNOPSIS">SYNOPSIS</a></li>
+  <li><a href="#DESCRIPTION">DESCRIPTION</a></li>
+  <li><a href="#NOTES">NOTES</a></li>
+  <li><a href="#RETURN-VALUES">RETURN VALUES</a></li>
+  <li><a href="#SEE-ALSO">SEE ALSO</a></li>
+  <li><a href="#POD-ERRORS">POD ERRORS</a></li>
+</ul>
+
+<h1 id="NAME">NAME</h1>
+
+<p>SSL_CTX_set_ssl_version, SSL_set_ssl_method, SSL_get_ssl_method - choose a new TLS/SSL method</p>
+
+<h1 id="SYNOPSIS">SYNOPSIS</h1>
+
+<pre><code> #include &lt;openssl/ssl.h&gt;
+
+ int SSL_CTX_set_ssl_version(SSL_CTX *ctx, const SSL_METHOD *method);
+ int SSL_set_ssl_method(SSL *s, const SSL_METHOD *method);
+ const SSL_METHOD *SSL_get_ssl_method(SSL *ssl);</code></pre>
+
+<h1 id="DESCRIPTION">DESCRIPTION</h1>
+
+<p>SSL_CTX_set_ssl_version() sets a new default TLS/SSL <b>method</b> for SSL objects newly created from this <b>ctx</b>. SSL objects already created with <a href="../../ssl/SSL_new.html">SSL_new</a> are not affected, except when <a href="../../ssl/SSL_clear.html">SSL_clear</a> is being called.</p>
+
+<p>SSL_set_ssl_method() sets a new TLS/SSL <b>method</b> for a particular <b>ssl</b> object. It may be reset, when SSL_clear() is called.</p>
+
+<p>SSL_get_ssl_method() returns a function pointer to the TLS/SSL method set in <b>ssl</b>.</p>
+
+<h1 id="NOTES">NOTES</h1>
+
+<p>The available <b>method</b> choices are described in <a href="../../ssl/SSL_CTX_new.html">SSL_CTX_new</a>.</p>
+
+<p>When <a href="../../ssl/SSL_clear.html">SSL_clear</a> is called and no session is connected to an SSL object, the method of the SSL object is reset to the method currently set in the corresponding SSL_CTX object.</p>
+
+<h1 id="RETURN-VALUES">RETURN VALUES</h1>
+
+<p>The following return values can occur for SSL_CTX_set_ssl_version() and SSL_set_ssl_method():</p>
+
+<dl>
+
+<dt id="pod0">0</dt>
+<dd>
+
+<p>The new choice failed, check the error stack to find out the reason.</p>
+
+</dd>
+<dt id="pod1">1</dt>
+<dd>
+
+<p>The operation succeeded.</p>
+
+</dd>
+</dl>
+
+<h1 id="SEE-ALSO">SEE ALSO</h1>
+
+<p><a href="../../ssl/SSL_CTX_new.html">SSL_CTX_new</a>, <a href="../../ssl/SSL_new.html">SSL_new</a>, <a href="../../ssl/SSL_clear.html">SSL_clear</a>, <a href="../../ssl/ssl.html">ssl</a>, <a href="../../ssl/SSL_set_connect_state.html">SSL_set_connect_state</a></p>
+
+<h1 id="POD-ERRORS">POD ERRORS</h1>
+
+<p>Hey! <b>The above document had some coding errors, which are explained below:</b></p>
+
+<dl>
+
+<dt id="Around-line-49">Around line 49:</dt>
+<dd>
+
+<p>Expected text after =item, not a number</p>
+
+</dd>
+</dl>
+
+
+</body>
+
+</html>
+
+

@@ -1,0 +1,72 @@
+<?xml version="1.0" ?>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title></title>
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<link rev="made" href="mailto:root@localhost" />
+</head>
+
+<body style="background-color: white">
+
+
+
+<ul id="index">
+  <li><a href="#NAME">NAME</a></li>
+  <li><a href="#SYNOPSIS">SYNOPSIS</a></li>
+  <li><a href="#DESCRIPTION">DESCRIPTION</a></li>
+  <li><a href="#NOTES">NOTES</a></li>
+  <li><a href="#SEE-ALSO">SEE ALSO</a></li>
+</ul>
+
+<h1 id="NAME">NAME</h1>
+
+<p>d2i_PKCS8PrivateKey_bio, d2i_PKCS8PrivateKey_fp, i2d_PKCS8PrivateKey_bio, i2d_PKCS8PrivateKey_fp, i2d_PKCS8PrivateKey_nid_bio, i2d_PKCS8PrivateKey_nid_fp - PKCS#8 format private key functions</p>
+
+<h1 id="SYNOPSIS">SYNOPSIS</h1>
+
+<pre><code> #include &lt;openssl/evp.h&gt;
+
+ EVP_PKEY *d2i_PKCS8PrivateKey_bio(BIO *bp, EVP_PKEY **x, pem_password_cb *cb, void *u);
+ EVP_PKEY *d2i_PKCS8PrivateKey_fp(FILE *fp, EVP_PKEY **x, pem_password_cb *cb, void *u);
+
+ int i2d_PKCS8PrivateKey_bio(BIO *bp, EVP_PKEY *x, const EVP_CIPHER *enc,
+                                  char *kstr, int klen,
+                                  pem_password_cb *cb, void *u);
+
+ int i2d_PKCS8PrivateKey_fp(FILE *fp, EVP_PKEY *x, const EVP_CIPHER *enc,
+                                  char *kstr, int klen,
+                                  pem_password_cb *cb, void *u);
+
+ int i2d_PKCS8PrivateKey_nid_bio(BIO *bp, EVP_PKEY *x, int nid,
+                                  char *kstr, int klen,
+                                  pem_password_cb *cb, void *u);
+
+ int i2d_PKCS8PrivateKey_nid_fp(FILE *fp, EVP_PKEY *x, int nid,
+                                  char *kstr, int klen,
+                                  pem_password_cb *cb, void *u);</code></pre>
+
+<h1 id="DESCRIPTION">DESCRIPTION</h1>
+
+<p>The PKCS#8 functions encode and decode private keys in PKCS#8 format using both PKCS#5 v1.5 and PKCS#5 v2.0 password based encryption algorithms.</p>
+
+<p>Other than the use of DER as opposed to PEM these functions are identical to the corresponding <b>PEM</b> function as described in the <a href="../../crypto/pem.html">pem</a> manual page.</p>
+
+<h1 id="NOTES">NOTES</h1>
+
+<p>Before using these functions <a href="../../crypto/OpenSSL_add_all_algorithms.html">OpenSSL_add_all_algorithms</a> should be called to initialize the internal algorithm lookup tables otherwise errors about unknown algorithms will occur if an attempt is made to decrypt a private key.</p>
+
+<p>These functions are currently the only way to store encrypted private keys using DER format.</p>
+
+<p>Currently all the functions use BIOs or FILE pointers, there are no functions which work directly on memory: this can be readily worked around by converting the buffers to memory BIOs, see <a href="../../crypto/BIO_s_mem.html">BIO_s_mem</a> for details.</p>
+
+<h1 id="SEE-ALSO">SEE ALSO</h1>
+
+<p><a href="../../crypto/pem.html">pem</a></p>
+
+
+</body>
+
+</html>
+
+
