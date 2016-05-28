@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include <time.h>
 
 #define SAMPLE_NO   100
@@ -19,8 +20,8 @@ unsigned long long PS_getTimeStamp() {
                          :
                          : "%rax", "%rbx", "%rcx", "%rdx");
 
-    h_64 = (ps_u64) h;
-    l_64 = (ps_u64) l;
+    h_64 = (unsigned long long) h;
+    l_64 = (unsigned long long) l;
 
     return (l_64 | (h_64 << 32));
 }
@@ -35,41 +36,74 @@ unsigned long long compute_average(unsigned long long *arr) {
     return avg / SAMPLE_NO;
 }
 
-// void show_goodtag(const char *message) {
-//     char *key = "Cozonace si oua";
-//     char *goodtag;
 
-//     /* Get correct tag */
-//     //goodtag = aes_cbc_mac(key, message);
+unsigned char* aes_cbc_mac(const char *key, const char *message) {
+    unsigned char *tag = (unsigned char*)malloc(16);
     
-//     for (int i = 0; i < 16; i++) {
-//         printf("%x", (unsigned char)goodtag[i]);
-//     }
-//     printf("\n");
-// }
+    for (int i = 0; i < 16; i++) {
+        tag[i] = i + 1;
+    }
+
+    return tag;
+}
+
+void show_goodtag(const char *message) {
+    const char *key = "Cozonace si oua";
+    unsigned char *goodtag;
+
+    /* Get correct tag */
+    goodtag = aes_cbc_mac(key, message);
+    
+    for (int i = 0; i < 16; i++) {
+        printf("%02x ", goodtag[i]);
+    }
+    printf("\n");
+    free(goodtag);
+}
+
+void show_tag(const unsigned char *tag) {
+    for (int i = 0; i < 16; i++) {
+        printf("%02x ", tag[i]);
+    }
+    printf("\n");
+}
+
+int slow_foo() {
+    int limit = 100000;
+    int result = 2;
+
+    for (int i = 0; i < limit; i++) {
+        result = (result * 4) - 2000;
+    }
+
+    return result;
+}
 
 /* will run on the server with the oracle */
-int verify(const char *message, const char *tag) {
-    char *key = "Cozonace si oua";
-    char * goodtag;
+int verify(const char *message, unsigned char *tag) {
+    const char *key = "Cozonace si oua";
+    unsigned char * goodtag; 
 
     /* Get correct tag */
     goodtag = aes_cbc_mac(key, message);
 
     for (int i = 0; i < 16; i++) {
-        // slow_foo()
-        if (tag[i] != goodtag[i])
+        slow_foo();
+        if (tag[i] != goodtag[i]) {
+            free(goodtag);
             return FALSE; 
+        }
     }
 
+    free(goodtag);
     return TRUE;
 }
 
 int main() {
-    char *message = "Hristos a inviat!";
+    const char *message = "Hristos a inviat!";
     unsigned char candidate_hash[16];
 
-    // show_goodtag(message);
+    show_goodtag(message);
 
     memset(candidate_hash, 0, 16);
 
@@ -94,14 +128,17 @@ int main() {
             }
 
             avg_delta = compute_average(delta);
+            //printf("delta is %llu\n", avg_delta);
 
             if (avg_delta > max_delta) {
                 current_byte = j;
                 max_delta = avg_delta;
             }
         }
+        // printf("\n");
 
         candidate_hash[i] = current_byte;
+        show_tag(candidate_hash);
     }
 
     /* try all possibilities for last byte */
@@ -109,8 +146,9 @@ int main() {
         candidate_hash[15] = i;
 
         if (verify(message, candidate_hash) == TRUE) {
-            printf ("Found hash")
+            printf ("Found hash");
         }
     }
 
+    return 0;
 }
