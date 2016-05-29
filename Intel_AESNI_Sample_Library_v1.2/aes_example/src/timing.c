@@ -2095,9 +2095,56 @@ void aes_dec(unsigned int crypt_method,
 	aes_decrypt(USE_iAES, input, output, key, size);
 }
 
-void aes_enc_cbc()
+void aes_enc_cbc(int size, 
+                    unsigned int crypt_method, 
+                    unsigned char *input, 
+                    unsigned char *output, 
+                    enum modeOfOperation mode, 
+                    unsigned char *key)
 {
+    unsigned char IV[16] = {0};
 
+    /* the AES key */
+
+    /* char firstRound */
+    char firstRound = 1;
+
+    if (mode == CBC)
+    {
+
+        for (i = 0; i < 16; i++)
+        {
+            input[i] = input[i] ^ ((firstRound) ? IV[i] : output[i]);
+        }
+        firstRound = 0;
+        aes_encrypt(crypt_method, input, output, key, size);
+    }
+        
+}
+
+void aes_cbc_mac(unsigned char* output)
+{
+    int key_size_in_bytes = 16;
+
+    unsigned char *key = "Cozonace si oua ";
+    unsigned char *message = "Hristos a inviat";
+
+    unsigned char* output1 = (unsigned char *)malloc(16*sizeof(unsigned char));
+
+    unsigned char* k1 = (unsigned char *)malloc(16*sizeof(unsigned char));
+    unsigned char* k2 = (unsigned char *)malloc(16*sizeof(unsigned char));
+
+    /*# Derive the keys for raw-CBC and for the final tag
+    res = SHA256.new(k + "CBC MAC keys").digest()
+    k1 = res[0:16]
+    k2 = res[16:32]*/
+
+    /*# Get the MAC:
+    # 1 - Do aes-CBC with k1 and iv=0, then keep only last block (last 16 bytes) of encryption */
+    aes_enc_cbc(key_size_in_bytes, USE_iAES, message, output1, CBC, k1);
+
+    /*# 2 - Perform another AES encryption (simple, without CBC) on the last block from #1 using k2*/
+    aes_enc(USE_iAES, output1+16, output, key2, key_size_in_bytes)
 }
 
 int main(int argc, char **argv)
@@ -2116,18 +2163,32 @@ int main(int argc, char **argv)
 	int key_size_in_bytes = 16;
 
 	printf("quick test: iAES encryption, using 128 bit key\n");
-	aes_enc(USE_iAES, test_input, output, key, key_size_in_bytes)
+	aes_enc(USE_iAES, test_input, output, key, key_size_in_bytes);
 
 	printf("output is 0x");
 	for(i=0; i < 16; i++) {printf("%.2x", (unsigned int)(output[i]));}
 	printf("\n");
 
 	printf("quick test: iAES decryption\n");
-    	aes_dec(USE_iAES, test_input, output, key, key_size_in_bytes);
+    aes_dec(USE_iAES, test_input, output, key, key_size_in_bytes);
 
 	printf("output is 0x");
 	for(i=0; i < 16; i++) {printf("%.2x", (unsigned int)(output[i]));}
 	printf("\n");
+
+    printf("quick test: iAES CBC encryption\n");
+    aes_enc_cbc(key_size_in_bytes, USE_iAES, input, output, CBC, key);
+
+    printf("output is 0x");
+    for(i=0; i < 16; i++) {printf("%.2x", (unsigned int)(output[i]));}
+    printf("\n");
+
+    printf("quick test: iAES CBC-MAC encryption\n");
+    aes_enc_cbc(output);
+
+    printf("output is 0x");
+    for(i=0; i < 16; i++) {printf("%.2x", (unsigned int)(output[i]));}
+    printf("\n");
 
 	return 0;
 }
