@@ -2112,6 +2112,7 @@ void aes_enc_cbc(int size,
     if (mode == CBC)
     {
 
+        int i;
         for (i = 0; i < 16; i++)
         {
             input[i] = input[i] ^ ((firstRound) ? IV[i] : output[i]);
@@ -2144,7 +2145,7 @@ void aes_cbc_mac(unsigned char* output)
     aes_enc_cbc(key_size_in_bytes, USE_iAES, message, output1, CBC, k1);
 
     /*# 2 - Perform another AES encryption (simple, without CBC) on the last block from #1 using k2*/
-    aes_enc(USE_iAES, output1+16, output, key2, key_size_in_bytes)
+    aes_enc(USE_iAES, output1+16, output, k2, key_size_in_bytes);
 }
 
 int main(int argc, char **argv)
@@ -2166,6 +2167,7 @@ int main(int argc, char **argv)
 	aes_enc(USE_iAES, test_input, output, key, key_size_in_bytes);
 
 	printf("output is 0x");
+    int i = 0;
 	for(i=0; i < 16; i++) {printf("%.2x", (unsigned int)(output[i]));}
 	printf("\n");
 
@@ -2177,14 +2179,14 @@ int main(int argc, char **argv)
 	printf("\n");
 
     printf("quick test: iAES CBC encryption\n");
-    aes_enc_cbc(key_size_in_bytes, USE_iAES, input, output, CBC, key);
+    aes_enc_cbc(key_size_in_bytes, USE_iAES, test_input, output, CBC, key);
 
     printf("output is 0x");
     for(i=0; i < 16; i++) {printf("%.2x", (unsigned int)(output[i]));}
     printf("\n");
 
     printf("quick test: iAES CBC-MAC encryption\n");
-    aes_enc_cbc(output);
+    aes_cbc_mac(output);
 
     printf("output is 0x");
     for(i=0; i < 16; i++) {printf("%.2x", (unsigned int)(output[i]));}
