@@ -69,7 +69,7 @@ void show_tag(const unsigned char *tag) {
 }
 
 int slow_foo() {
-    int limit = 100000;
+    int limit = 10000;
     int result = 2;
 
     for (int i = 0; i < limit; i++) {
@@ -80,14 +80,14 @@ int slow_foo() {
 }
 
 /* will run on the server with the oracle */
-int verify(const char *message, unsigned char *tag) {
+int verify(const char *message, unsigned char *tag, int cursor) {
     const char *key = "Cozonace si oua";
     unsigned char * goodtag; 
 
     /* Get correct tag */
     goodtag = aes_cbc_mac(key, message);
 
-    for (int i = 0; i < 16; i++) {
+    for (int i = cursor; i < 16; i++) {
         slow_foo();
         if (tag[i] != goodtag[i]) {
             free(goodtag);
@@ -122,7 +122,7 @@ int main() {
 
             for (int k = 0; k < SAMPLE_NO; k++) {
                 start_ts = PS_getTimeStamp();
-                verify(message, candidate_hash);
+                verify(message, candidate_hash, i);
                 end_ts = PS_getTimeStamp();
                 delta[k] = end_ts - start_ts;
             }
@@ -145,8 +145,8 @@ int main() {
     for (int i = 0; i < 256; i++) {
         candidate_hash[15] = i;
 
-        if (verify(message, candidate_hash) == TRUE) {
-            printf ("Found hash");
+        if (verify(message, candidate_hash, 0) == TRUE) {
+            printf ("Found hash\n");
         }
     }
 
