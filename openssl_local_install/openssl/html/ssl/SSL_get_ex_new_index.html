@@ -1,0 +1,71 @@
+<?xml version="1.0" ?>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title></title>
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<link rev="made" href="mailto:root@localhost" />
+</head>
+
+<body style="background-color: white">
+
+
+
+<ul id="index">
+  <li><a href="#NAME">NAME</a></li>
+  <li><a href="#SYNOPSIS">SYNOPSIS</a></li>
+  <li><a href="#DESCRIPTION">DESCRIPTION</a></li>
+  <li><a href="#EXAMPLES">EXAMPLES</a></li>
+  <li><a href="#SEE-ALSO">SEE ALSO</a></li>
+</ul>
+
+<h1 id="NAME">NAME</h1>
+
+<p>SSL_get_ex_new_index, SSL_set_ex_data, SSL_get_ex_data - internal application specific data functions</p>
+
+<h1 id="SYNOPSIS">SYNOPSIS</h1>
+
+<pre><code> #include &lt;openssl/ssl.h&gt;
+
+ int SSL_get_ex_new_index(long argl, void *argp,
+                CRYPTO_EX_new *new_func,
+                CRYPTO_EX_dup *dup_func,
+                CRYPTO_EX_free *free_func);
+
+ int SSL_set_ex_data(SSL *ssl, int idx, void *arg);
+
+ void *SSL_get_ex_data(const SSL *ssl, int idx);
+
+ typedef int new_func(void *parent, void *ptr, CRYPTO_EX_DATA *ad,
+                int idx, long argl, void *argp);
+ typedef void free_func(void *parent, void *ptr, CRYPTO_EX_DATA *ad,
+                int idx, long argl, void *argp);
+ typedef int dup_func(CRYPTO_EX_DATA *to, CRYPTO_EX_DATA *from, void *from_d,
+                int idx, long argl, void *argp);</code></pre>
+
+<h1 id="DESCRIPTION">DESCRIPTION</h1>
+
+<p>Several OpenSSL structures can have application specific data attached to them. These functions are used internally by OpenSSL to manipulate application specific data attached to a specific structure.</p>
+
+<p>SSL_get_ex_new_index() is used to register a new index for application specific data.</p>
+
+<p>SSL_set_ex_data() is used to store application data at <b>arg</b> for <b>idx</b> into the <b>ssl</b> object.</p>
+
+<p>SSL_get_ex_data() is used to retrieve the information for <b>idx</b> from <b>ssl</b>.</p>
+
+<p>A detailed description for the <b>*_get_ex_new_index()</b> functionality can be found in <a href="../../crypto/RSA_get_ex_new_index.html">RSA_get_ex_new_index</a>. The <b>*_get_ex_data()</b> and <b>*_set_ex_data()</b> functionality is described in <a href="../../crypto/CRYPTO_set_ex_data.html">CRYPTO_set_ex_data</a>.</p>
+
+<h1 id="EXAMPLES">EXAMPLES</h1>
+
+<p>An example on how to use the functionality is included in the example verify_callback() in <a href="../../ssl/SSL_CTX_set_verify.html">SSL_CTX_set_verify</a>.</p>
+
+<h1 id="SEE-ALSO">SEE ALSO</h1>
+
+<p><a href="../../ssl/ssl.html">ssl</a>, <a href="../../crypto/RSA_get_ex_new_index.html">RSA_get_ex_new_index</a>, <a href="../../crypto/CRYPTO_set_ex_data.html">CRYPTO_set_ex_data</a>, <a href="../../ssl/SSL_CTX_set_verify.html">SSL_CTX_set_verify</a></p>
+
+
+</body>
+
+</html>
+
+

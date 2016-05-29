@@ -1,0 +1,94 @@
+<?xml version="1.0" ?>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title></title>
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<link rev="made" href="mailto:root@localhost" />
+</head>
+
+<body style="background-color: white">
+
+
+
+<ul id="index">
+  <li><a href="#NAME">NAME</a></li>
+  <li><a href="#SYNOPSIS">SYNOPSIS</a></li>
+  <li><a href="#DESCRIPTION">DESCRIPTION</a></li>
+  <li><a href="#RETURN-VALUE">RETURN VALUE</a></li>
+  <li><a href="#BUGS">BUGS</a></li>
+  <li><a href="#SEE-ALSO">SEE ALSO</a></li>
+  <li><a href="#HISTORY">HISTORY</a></li>
+</ul>
+
+<h1 id="NAME">NAME</h1>
+
+<p>DSA_generate_parameters - generate DSA parameters</p>
+
+<h1 id="SYNOPSIS">SYNOPSIS</h1>
+
+<pre><code> #include &lt;openssl/dsa.h&gt;
+
+ DSA *DSA_generate_parameters(int bits, unsigned char *seed,
+                int seed_len, int *counter_ret, unsigned long *h_ret,
+                void (*callback)(int, int, void *), void *cb_arg);</code></pre>
+
+<h1 id="DESCRIPTION">DESCRIPTION</h1>
+
+<p>DSA_generate_parameters() generates primes p and q and a generator g for use in the DSA.</p>
+
+<p><b>bits</b> is the length of the prime to be generated; the DSS allows a maximum of 1024 bits.</p>
+
+<p>If <b>seed</b> is <b>NULL</b> or <b>seed_len</b> &lt; 20, the primes will be generated at random. Otherwise, the seed is used to generate them. If the given seed does not yield a prime q, a new random seed is chosen and placed at <b>seed</b>.</p>
+
+<p>DSA_generate_parameters() places the iteration count in *<b>counter_ret</b> and a counter used for finding a generator in *<b>h_ret</b>, unless these are <b>NULL</b>.</p>
+
+<p>A callback function may be used to provide feedback about the progress of the key generation. If <b>callback</b> is not <b>NULL</b>, it will be called as follows:</p>
+
+<ul>
+
+<li><p>When a candidate for q is generated, <b>callback(0, m++, cb_arg)</b> is called (m is 0 for the first candidate).</p>
+
+</li>
+<li><p>When a candidate for q has passed a test by trial division, <b>callback(1, -1, cb_arg)</b> is called. While a candidate for q is tested by Miller-Rabin primality tests, <b>callback(1, i, cb_arg)</b> is called in the outer loop (once for each witness that confirms that the candidate may be prime); i is the loop counter (starting at 0).</p>
+
+</li>
+<li><p>When a prime q has been found, <b>callback(2, 0, cb_arg)</b> and <b>callback(3, 0, cb_arg)</b> are called.</p>
+
+</li>
+<li><p>Before a candidate for p (other than the first) is generated and tested, <b>callback(0, counter, cb_arg)</b> is called.</p>
+
+</li>
+<li><p>When a candidate for p has passed the test by trial division, <b>callback(1, -1, cb_arg)</b> is called. While it is tested by the Miller-Rabin primality test, <b>callback(1, i, cb_arg)</b> is called in the outer loop (once for each witness that confirms that the candidate may be prime). i is the loop counter (starting at 0).</p>
+
+</li>
+<li><p>When p has been found, <b>callback(2, 1, cb_arg)</b> is called.</p>
+
+</li>
+<li><p>When the generator has been found, <b>callback(3, 1, cb_arg)</b> is called.</p>
+
+</li>
+</ul>
+
+<h1 id="RETURN-VALUE">RETURN VALUE</h1>
+
+<p>DSA_generate_parameters() returns a pointer to the DSA structure, or <b>NULL</b> if the parameter generation fails. The error codes can be obtained by <a href="../../crypto/ERR_get_error.html">ERR_get_error</a>.</p>
+
+<h1 id="BUGS">BUGS</h1>
+
+<p>Seed lengths &gt; 20 are not supported.</p>
+
+<h1 id="SEE-ALSO">SEE ALSO</h1>
+
+<p><a href="../../apps/dsa.html">dsa</a>, <a href="../../crypto/ERR_get_error.html">ERR_get_error</a>, <a href="../../apps/rand.html">rand</a>, <a>DSA_free</a></p>
+
+<h1 id="HISTORY">HISTORY</h1>
+
+<p>DSA_generate_parameters() appeared in SSLeay 0.8. The <b>cb_arg</b> argument was added in SSLeay 0.9.0. In versions up to OpenSSL 0.9.4, <b>callback(1, ...)</b> was called in the inner loop of the Miller-Rabin test whenever it reached the squaring step (the parameters to <b>callback</b> did not reveal how many witnesses had been tested); since OpenSSL 0.9.5, <b>callback(1, ...)</b> is called as in BN_is_prime(3), i.e. once for each witness.</p>
+
+
+</body>
+
+</html>
+
+

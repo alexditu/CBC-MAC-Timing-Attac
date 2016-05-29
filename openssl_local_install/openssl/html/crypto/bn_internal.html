@@ -1,0 +1,187 @@
+<?xml version="1.0" ?>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title></title>
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<link rev="made" href="mailto:root@localhost" />
+</head>
+
+<body style="background-color: white">
+
+
+
+<ul id="index">
+  <li><a href="#NAME">NAME</a></li>
+  <li><a href="#SYNOPSIS">SYNOPSIS</a></li>
+  <li><a href="#DESCRIPTION">DESCRIPTION</a>
+    <ul>
+      <li><a href="#The-BIGNUM-structure">The BIGNUM structure</a></li>
+      <li><a href="#Low-level-arithmetic-operations">Low-level arithmetic operations</a></li>
+      <li><a href="#Size-changes">Size changes</a></li>
+      <li><a href="#Debugging">Debugging</a></li>
+    </ul>
+  </li>
+  <li><a href="#SEE-ALSO">SEE ALSO</a></li>
+</ul>
+
+<h1 id="NAME">NAME</h1>
+
+<p>bn_mul_words, bn_mul_add_words, bn_sqr_words, bn_div_words, bn_add_words, bn_sub_words, bn_mul_comba4, bn_mul_comba8, bn_sqr_comba4, bn_sqr_comba8, bn_cmp_words, bn_mul_normal, bn_mul_low_normal, bn_mul_recursive, bn_mul_part_recursive, bn_mul_low_recursive, bn_mul_high, bn_sqr_normal, bn_sqr_recursive, bn_expand, bn_wexpand, bn_expand2, bn_fix_top, bn_check_top, bn_print, bn_dump, bn_set_max, bn_set_high, bn_set_low - BIGNUM library internal functions</p>
+
+<h1 id="SYNOPSIS">SYNOPSIS</h1>
+
+<pre><code> #include &lt;openssl/bn.h&gt;
+
+ BN_ULONG bn_mul_words(BN_ULONG *rp, BN_ULONG *ap, int num, BN_ULONG w);
+ BN_ULONG bn_mul_add_words(BN_ULONG *rp, BN_ULONG *ap, int num,
+   BN_ULONG w);
+ void     bn_sqr_words(BN_ULONG *rp, BN_ULONG *ap, int num);
+ BN_ULONG bn_div_words(BN_ULONG h, BN_ULONG l, BN_ULONG d);
+ BN_ULONG bn_add_words(BN_ULONG *rp, BN_ULONG *ap, BN_ULONG *bp,
+   int num);
+ BN_ULONG bn_sub_words(BN_ULONG *rp, BN_ULONG *ap, BN_ULONG *bp,
+   int num);
+
+ void bn_mul_comba4(BN_ULONG *r, BN_ULONG *a, BN_ULONG *b);
+ void bn_mul_comba8(BN_ULONG *r, BN_ULONG *a, BN_ULONG *b);
+ void bn_sqr_comba4(BN_ULONG *r, BN_ULONG *a);
+ void bn_sqr_comba8(BN_ULONG *r, BN_ULONG *a);
+
+ int bn_cmp_words(BN_ULONG *a, BN_ULONG *b, int n);
+
+ void bn_mul_normal(BN_ULONG *r, BN_ULONG *a, int na, BN_ULONG *b,
+   int nb);
+ void bn_mul_low_normal(BN_ULONG *r, BN_ULONG *a, BN_ULONG *b, int n);
+ void bn_mul_recursive(BN_ULONG *r, BN_ULONG *a, BN_ULONG *b, int n2,
+   int dna,int dnb,BN_ULONG *tmp);
+ void bn_mul_part_recursive(BN_ULONG *r, BN_ULONG *a, BN_ULONG *b,
+   int n, int tna,int tnb, BN_ULONG *tmp);
+ void bn_mul_low_recursive(BN_ULONG *r, BN_ULONG *a, BN_ULONG *b,
+   int n2, BN_ULONG *tmp);
+ void bn_mul_high(BN_ULONG *r, BN_ULONG *a, BN_ULONG *b, BN_ULONG *l,
+   int n2, BN_ULONG *tmp);
+
+ void bn_sqr_normal(BN_ULONG *r, BN_ULONG *a, int n, BN_ULONG *tmp);
+ void bn_sqr_recursive(BN_ULONG *r, BN_ULONG *a, int n2, BN_ULONG *tmp);
+
+ void mul(BN_ULONG r, BN_ULONG a, BN_ULONG w, BN_ULONG c);
+ void mul_add(BN_ULONG r, BN_ULONG a, BN_ULONG w, BN_ULONG c);
+ void sqr(BN_ULONG r0, BN_ULONG r1, BN_ULONG a);
+
+ BIGNUM *bn_expand(BIGNUM *a, int bits);
+ BIGNUM *bn_wexpand(BIGNUM *a, int n);
+ BIGNUM *bn_expand2(BIGNUM *a, int n);
+ void bn_fix_top(BIGNUM *a);
+
+ void bn_check_top(BIGNUM *a);
+ void bn_print(BIGNUM *a);
+ void bn_dump(BN_ULONG *d, int n);
+ void bn_set_max(BIGNUM *a);
+ void bn_set_high(BIGNUM *r, BIGNUM *a, int n);
+ void bn_set_low(BIGNUM *r, BIGNUM *a, int n);</code></pre>
+
+<h1 id="DESCRIPTION">DESCRIPTION</h1>
+
+<p>This page documents the internal functions used by the OpenSSL <b>BIGNUM</b> implementation. They are described here to facilitate debugging and extending the library. They are <i>not</i> to be used by applications.</p>
+
+<h2 id="The-BIGNUM-structure">The BIGNUM structure</h2>
+
+<pre><code> typedef struct bignum_st BIGNUM;
+
+ struct bignum_st
+        {
+        BN_ULONG *d;    /* Pointer to an array of &#39;BN_BITS2&#39; bit chunks. */
+        int top;        /* Index of last used d +1. */
+        /* The next are internal book keeping for bn_expand. */
+        int dmax;       /* Size of the d array. */
+        int neg;        /* one if the number is negative */
+        int flags;
+        };</code></pre>
+
+<p>The integer value is stored in <b>d</b>, a malloc()ed array of words (<b>BN_ULONG</b>), least significant word first. A <b>BN_ULONG</b> can be either 16, 32 or 64 bits in size, depending on the &#39;number of bits&#39; (<b>BITS2</b>) specified in <code>openssl/bn.h</code>.</p>
+
+<p><b>dmax</b> is the size of the <b>d</b> array that has been allocated. <b>top</b> is the number of words being used, so for a value of 4, bn.d[0]=4 and bn.top=1. <b>neg</b> is 1 if the number is negative. When a <b>BIGNUM</b> is <b>0</b>, the <b>d</b> field can be <b>NULL</b> and <b>top</b> == <b>0</b>.</p>
+
+<p><b>flags</b> is a bit field of flags which are defined in <code>openssl/bn.h</code>. The flags begin with <b>BN_FLG_</b>. The macros BN_set_flags(b,n) and BN_get_flags(b,n) exist to enable or fetch flag(s) <b>n</b> from <b>BIGNUM</b> structure <b>b</b>.</p>
+
+<p>Various routines in this library require the use of temporary <b>BIGNUM</b> variables during their execution. Since dynamic memory allocation to create <b>BIGNUM</b>s is rather expensive when used in conjunction with repeated subroutine calls, the <b>BN_CTX</b> structure is used. This structure contains <b>BN_CTX_NUM</b> <b>BIGNUM</b>s, see <a href="../../crypto/BN_CTX_start.html">BN_CTX_start</a>.</p>
+
+<h2 id="Low-level-arithmetic-operations">Low-level arithmetic operations</h2>
+
+<p>These functions are implemented in C and for several platforms in assembly language:</p>
+
+<p>bn_mul_words(<b>rp</b>, <b>ap</b>, <b>num</b>, <b>w</b>) operates on the <b>num</b> word arrays <b>rp</b> and <b>ap</b>. It computes <b>ap</b> * <b>w</b>, places the result in <b>rp</b>, and returns the high word (carry).</p>
+
+<p>bn_mul_add_words(<b>rp</b>, <b>ap</b>, <b>num</b>, <b>w</b>) operates on the <b>num</b> word arrays <b>rp</b> and <b>ap</b>. It computes <b>ap</b> * <b>w</b> + <b>rp</b>, places the result in <b>rp</b>, and returns the high word (carry).</p>
+
+<p>bn_sqr_words(<b>rp</b>, <b>ap</b>, <b>n</b>) operates on the <b>num</b> word array <b>ap</b> and the 2*<b>num</b> word array <b>ap</b>. It computes <b>ap</b> * <b>ap</b> word-wise, and places the low and high bytes of the result in <b>rp</b>.</p>
+
+<p>bn_div_words(<b>h</b>, <b>l</b>, <b>d</b>) divides the two word number (<b>h</b>,<b>l</b>) by <b>d</b> and returns the result.</p>
+
+<p>bn_add_words(<b>rp</b>, <b>ap</b>, <b>bp</b>, <b>num</b>) operates on the <b>num</b> word arrays <b>ap</b>, <b>bp</b> and <b>rp</b>. It computes <b>ap</b> + <b>bp</b>, places the result in <b>rp</b>, and returns the high word (carry).</p>
+
+<p>bn_sub_words(<b>rp</b>, <b>ap</b>, <b>bp</b>, <b>num</b>) operates on the <b>num</b> word arrays <b>ap</b>, <b>bp</b> and <b>rp</b>. It computes <b>ap</b> - <b>bp</b>, places the result in <b>rp</b>, and returns the carry (1 if <b>bp</b> &gt; <b>ap</b>, 0 otherwise).</p>
+
+<p>bn_mul_comba4(<b>r</b>, <b>a</b>, <b>b</b>) operates on the 4 word arrays <b>a</b> and <b>b</b> and the 8 word array <b>r</b>. It computes <b>a</b>*<b>b</b> and places the result in <b>r</b>.</p>
+
+<p>bn_mul_comba8(<b>r</b>, <b>a</b>, <b>b</b>) operates on the 8 word arrays <b>a</b> and <b>b</b> and the 16 word array <b>r</b>. It computes <b>a</b>*<b>b</b> and places the result in <b>r</b>.</p>
+
+<p>bn_sqr_comba4(<b>r</b>, <b>a</b>, <b>b</b>) operates on the 4 word arrays <b>a</b> and <b>b</b> and the 8 word array <b>r</b>.</p>
+
+<p>bn_sqr_comba8(<b>r</b>, <b>a</b>, <b>b</b>) operates on the 8 word arrays <b>a</b> and <b>b</b> and the 16 word array <b>r</b>.</p>
+
+<p>The following functions are implemented in C:</p>
+
+<p>bn_cmp_words(<b>a</b>, <b>b</b>, <b>n</b>) operates on the <b>n</b> word arrays <b>a</b> and <b>b</b>. It returns 1, 0 and -1 if <b>a</b> is greater than, equal and less than <b>b</b>.</p>
+
+<p>bn_mul_normal(<b>r</b>, <b>a</b>, <b>na</b>, <b>b</b>, <b>nb</b>) operates on the <b>na</b> word array <b>a</b>, the <b>nb</b> word array <b>b</b> and the <b>na</b>+<b>nb</b> word array <b>r</b>. It computes <b>a</b>*<b>b</b> and places the result in <b>r</b>.</p>
+
+<p>bn_mul_low_normal(<b>r</b>, <b>a</b>, <b>b</b>, <b>n</b>) operates on the <b>n</b> word arrays <b>r</b>, <b>a</b> and <b>b</b>. It computes the <b>n</b> low words of <b>a</b>*<b>b</b> and places the result in <b>r</b>.</p>
+
+<p>bn_mul_recursive(<b>r</b>, <b>a</b>, <b>b</b>, <b>n2</b>, <b>dna</b>, <b>dnb</b>, <b>t</b>) operates on the word arrays <b>a</b> and <b>b</b> of length <b>n2</b>+<b>dna</b> and <b>n2</b>+<b>dnb</b> (<b>dna</b> and <b>dnb</b> are currently allowed to be 0 or negative) and the 2*<b>n2</b> word arrays <b>r</b> and <b>t</b>. <b>n2</b> must be a power of 2. It computes <b>a</b>*<b>b</b> and places the result in <b>r</b>.</p>
+
+<p>bn_mul_part_recursive(<b>r</b>, <b>a</b>, <b>b</b>, <b>n</b>, <b>tna</b>, <b>tnb</b>, <b>tmp</b>) operates on the word arrays <b>a</b> and <b>b</b> of length <b>n</b>+<b>tna</b> and <b>n</b>+<b>tnb</b> and the 4*<b>n</b> word arrays <b>r</b> and <b>tmp</b>.</p>
+
+<p>bn_mul_low_recursive(<b>r</b>, <b>a</b>, <b>b</b>, <b>n2</b>, <b>tmp</b>) operates on the <b>n2</b> word arrays <b>r</b> and <b>tmp</b> and the <b>n2</b>/2 word arrays <b>a</b> and <b>b</b>.</p>
+
+<p>bn_mul_high(<b>r</b>, <b>a</b>, <b>b</b>, <b>l</b>, <b>n2</b>, <b>tmp</b>) operates on the <b>n2</b> word arrays <b>r</b>, <b>a</b>, <b>b</b> and <b>l</b> (?) and the 3*<b>n2</b> word array <b>tmp</b>.</p>
+
+<p>BN_mul() calls bn_mul_normal(), or an optimized implementation if the factors have the same size: bn_mul_comba8() is used if they are 8 words long, bn_mul_recursive() if they are larger than <b>BN_MULL_SIZE_NORMAL</b> and the size is an exact multiple of the word size, and bn_mul_part_recursive() for others that are larger than <b>BN_MULL_SIZE_NORMAL</b>.</p>
+
+<p>bn_sqr_normal(<b>r</b>, <b>a</b>, <b>n</b>, <b>tmp</b>) operates on the <b>n</b> word array <b>a</b> and the 2*<b>n</b> word arrays <b>tmp</b> and <b>r</b>.</p>
+
+<p>The implementations use the following macros which, depending on the architecture, may use &quot;long long&quot; C operations or inline assembler. They are defined in <code>bn_lcl.h</code>.</p>
+
+<p>mul(<b>r</b>, <b>a</b>, <b>w</b>, <b>c</b>) computes <b>w</b>*<b>a</b>+<b>c</b> and places the low word of the result in <b>r</b> and the high word in <b>c</b>.</p>
+
+<p>mul_add(<b>r</b>, <b>a</b>, <b>w</b>, <b>c</b>) computes <b>w</b>*<b>a</b>+<b>r</b>+<b>c</b> and places the low word of the result in <b>r</b> and the high word in <b>c</b>.</p>
+
+<p>sqr(<b>r0</b>, <b>r1</b>, <b>a</b>) computes <b>a</b>*<b>a</b> and places the low word of the result in <b>r0</b> and the high word in <b>r1</b>.</p>
+
+<h2 id="Size-changes">Size changes</h2>
+
+<p>bn_expand() ensures that <b>b</b> has enough space for a <b>bits</b> bit number. bn_wexpand() ensures that <b>b</b> has enough space for an <b>n</b> word number. If the number has to be expanded, both macros call bn_expand2(), which allocates a new <b>d</b> array and copies the data. They return <b>NULL</b> on error, <b>b</b> otherwise.</p>
+
+<p>The bn_fix_top() macro reduces <b>a-&gt;top</b> to point to the most significant non-zero word plus one when <b>a</b> has shrunk.</p>
+
+<h2 id="Debugging">Debugging</h2>
+
+<p>bn_check_top() verifies that <code>((a)-&gt;top &gt;= 0 &amp;&amp; (a)-&gt;top &lt;= (a)-&gt;dmax)</code>. A violation will cause the program to abort.</p>
+
+<p>bn_print() prints <b>a</b> to stderr. bn_dump() prints <b>n</b> words at <b>d</b> (in reverse order, i.e. most significant word first) to stderr.</p>
+
+<p>bn_set_max() makes <b>a</b> a static number with a <b>dmax</b> of its current size. This is used by bn_set_low() and bn_set_high() to make <b>r</b> a read-only <b>BIGNUM</b> that contains the <b>n</b> low or high words of <b>a</b>.</p>
+
+<p>If <b>BN_DEBUG</b> is not defined, bn_check_top(), bn_print(), bn_dump() and bn_set_max() are defined as empty macros.</p>
+
+<h1 id="SEE-ALSO">SEE ALSO</h1>
+
+<p><a href="../../crypto/bn.html">bn</a></p>
+
+
+</body>
+
+</html>
+
+

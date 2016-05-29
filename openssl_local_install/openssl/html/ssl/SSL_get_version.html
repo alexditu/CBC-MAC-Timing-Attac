@@ -1,0 +1,77 @@
+<?xml version="1.0" ?>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title></title>
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<link rev="made" href="mailto:root@localhost" />
+</head>
+
+<body style="background-color: white">
+
+
+
+<ul id="index">
+  <li><a href="#NAME">NAME</a></li>
+  <li><a href="#SYNOPSIS">SYNOPSIS</a></li>
+  <li><a href="#DESCRIPTION">DESCRIPTION</a></li>
+  <li><a href="#RETURN-VALUES">RETURN VALUES</a></li>
+  <li><a href="#SEE-ALSO">SEE ALSO</a></li>
+</ul>
+
+<h1 id="NAME">NAME</h1>
+
+<p>SSL_get_version - get the protocol version of a connection.</p>
+
+<h1 id="SYNOPSIS">SYNOPSIS</h1>
+
+<pre><code> #include &lt;openssl/ssl.h&gt;
+
+ const char *SSL_get_version(const SSL *ssl);</code></pre>
+
+<h1 id="DESCRIPTION">DESCRIPTION</h1>
+
+<p>SSL_get_cipher_version() returns the name of the protocol used for the connection <b>ssl</b>.</p>
+
+<h1 id="RETURN-VALUES">RETURN VALUES</h1>
+
+<p>The following strings can occur:</p>
+
+<dl>
+
+<dt id="SSLv2">SSLv2</dt>
+<dd>
+
+<p>The connection uses the SSLv2 protocol.</p>
+
+</dd>
+<dt id="SSLv3">SSLv3</dt>
+<dd>
+
+<p>The connection uses the SSLv3 protocol.</p>
+
+</dd>
+<dt id="TLSv1">TLSv1</dt>
+<dd>
+
+<p>The connection uses the TLSv1 protocol.</p>
+
+</dd>
+<dt id="unknown">unknown</dt>
+<dd>
+
+<p>This indicates that no version has been set (no connection established).</p>
+
+</dd>
+</dl>
+
+<h1 id="SEE-ALSO">SEE ALSO</h1>
+
+<p><a href="../../ssl/ssl.html">ssl</a></p>
+
+
+</body>
+
+</html>
+
+

@@ -1,0 +1,79 @@
+<?xml version="1.0" ?>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title></title>
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<link rev="made" href="mailto:root@localhost" />
+</head>
+
+<body style="background-color: white">
+
+
+
+<ul id="index">
+  <li><a href="#NAME">NAME</a></li>
+  <li><a href="#SYNOPSIS">SYNOPSIS</a></li>
+  <li><a href="#DESCRIPTION">DESCRIPTION</a></li>
+  <li><a href="#NOTES">NOTES</a></li>
+  <li><a href="#RETURN-VALUES">RETURN VALUES</a></li>
+  <li><a href="#SEE-ALSO">SEE ALSO</a></li>
+</ul>
+
+<h1 id="NAME">NAME</h1>
+
+<p>BIO_s_socket, BIO_new_socket - socket BIO</p>
+
+<h1 id="SYNOPSIS">SYNOPSIS</h1>
+
+<pre><code> #include &lt;openssl/bio.h&gt;
+
+ BIO_METHOD *BIO_s_socket(void);
+
+ long BIO_set_fd(BIO *b, int fd, long close_flag);
+ long BIO_get_fd(BIO *b, int *c);
+
+ BIO *BIO_new_socket(int sock, int close_flag);</code></pre>
+
+<h1 id="DESCRIPTION">DESCRIPTION</h1>
+
+<p>BIO_s_socket() returns the socket BIO method. This is a wrapper round the platform&#39;s socket routines.</p>
+
+<p>BIO_read() and BIO_write() read or write the underlying socket. BIO_puts() is supported but BIO_gets() is not.</p>
+
+<p>If the close flag is set then the socket is shut down and closed when the BIO is freed.</p>
+
+<p>BIO_set_fd() sets the socket of BIO <b>b</b> to <b>fd</b> and the close flag to <b>close_flag</b>.</p>
+
+<p>BIO_get_fd() places the socket in <b>c</b> if it is not NULL, it also returns the socket. If <b>c</b> is not NULL it should be of type (int *).</p>
+
+<p>BIO_new_socket() returns a socket BIO using <b>sock</b> and <b>close_flag</b>.</p>
+
+<h1 id="NOTES">NOTES</h1>
+
+<p>Socket BIOs also support any relevant functionality of file descriptor BIOs.</p>
+
+<p>The reason for having separate file descriptor and socket BIOs is that on some platforms sockets are not file descriptors and use distinct I/O routines, Windows is one such platform. Any code mixing the two will not work on all platforms.</p>
+
+<p>BIO_set_fd() and BIO_get_fd() are macros.</p>
+
+<h1 id="RETURN-VALUES">RETURN VALUES</h1>
+
+<p>BIO_s_socket() returns the socket BIO method.</p>
+
+<p>BIO_set_fd() always returns 1.</p>
+
+<p>BIO_get_fd() returns the socket or -1 if the BIO has not been initialized.</p>
+
+<p>BIO_new_socket() returns the newly allocated BIO or NULL is an error occurred.</p>
+
+<h1 id="SEE-ALSO">SEE ALSO</h1>
+
+<p>TBA</p>
+
+
+</body>
+
+</html>
+
+

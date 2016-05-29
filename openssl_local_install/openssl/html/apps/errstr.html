@@ -1,0 +1,57 @@
+<?xml version="1.0" ?>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title></title>
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<link rev="made" href="mailto:root@localhost" />
+</head>
+
+<body style="background-color: white">
+
+
+
+<ul id="index">
+  <li><a href="#NAME">NAME</a></li>
+  <li><a href="#SYNOPSIS">SYNOPSIS</a></li>
+  <li><a href="#DESCRIPTION">DESCRIPTION</a></li>
+  <li><a href="#EXAMPLE">EXAMPLE</a></li>
+  <li><a href="#SEE-ALSO">SEE ALSO</a></li>
+</ul>
+
+<h1 id="NAME">NAME</h1>
+
+<p>errstr - lookup error codes</p>
+
+<h1 id="SYNOPSIS">SYNOPSIS</h1>
+
+<p><b>openssl errstr error_code</b></p>
+
+<h1 id="DESCRIPTION">DESCRIPTION</h1>
+
+<p>Sometimes an application will not load error message and only numerical forms will be available. The <b>errstr</b> utility can be used to display the meaning of the hex code. The hex code is the hex digits after the second colon.</p>
+
+<h1 id="EXAMPLE">EXAMPLE</h1>
+
+<p>The error code:</p>
+
+<pre><code> 27594:error:2006D080:lib(32):func(109):reason(128):bss_file.c:107:</code></pre>
+
+<p>can be displayed with:</p>
+
+<pre><code> openssl errstr 2006D080</code></pre>
+
+<p>to produce the error message:</p>
+
+<pre><code> error:2006D080:BIO routines:BIO_new_file:no such file</code></pre>
+
+<h1 id="SEE-ALSO">SEE ALSO</h1>
+
+<p><a href="../../crypto/err.html">err</a>, <a href="../../crypto/ERR_load_crypto_strings.html">ERR_load_crypto_strings</a>, <a>SSL_load_error_strings</a></p>
+
+
+</body>
+
+</html>
+
+

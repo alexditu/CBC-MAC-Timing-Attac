@@ -1,0 +1,101 @@
+<?xml version="1.0" ?>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title></title>
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<link rev="made" href="mailto:root@localhost" />
+</head>
+
+<body style="background-color: white">
+
+
+
+<ul id="index">
+  <li><a href="#NAME">NAME</a></li>
+  <li><a href="#SYNOPSIS">SYNOPSIS</a></li>
+  <li><a href="#DESCRIPTION">DESCRIPTION</a></li>
+  <li><a href="#RETURN-VALUES">RETURN VALUES</a></li>
+  <li><a href="#BUGS">BUGS</a></li>
+  <li><a href="#SEE-ALSO">SEE ALSO</a></li>
+  <li><a href="#HISTORY">HISTORY</a></li>
+</ul>
+
+<h1 id="NAME">NAME</h1>
+
+<p>RSA_get_ex_new_index, RSA_set_ex_data, RSA_get_ex_data - add application specific data to RSA structures</p>
+
+<h1 id="SYNOPSIS">SYNOPSIS</h1>
+
+<pre><code> #include &lt;openssl/rsa.h&gt;
+
+ int RSA_get_ex_new_index(long argl, void *argp,
+                CRYPTO_EX_new *new_func,
+                CRYPTO_EX_dup *dup_func,
+                CRYPTO_EX_free *free_func);
+
+ int RSA_set_ex_data(RSA *r, int idx, void *arg);
+
+ void *RSA_get_ex_data(RSA *r, int idx);
+
+ typedef int CRYPTO_EX_new(void *parent, void *ptr, CRYPTO_EX_DATA *ad,
+                           int idx, long argl, void *argp);
+ typedef void CRYPTO_EX_free(void *parent, void *ptr, CRYPTO_EX_DATA *ad,
+                             int idx, long argl, void *argp);
+ typedef int CRYPTO_EX_dup(CRYPTO_EX_DATA *to, CRYPTO_EX_DATA *from, void *from_d,
+                           int idx, long argl, void *argp);</code></pre>
+
+<h1 id="DESCRIPTION">DESCRIPTION</h1>
+
+<p>Several OpenSSL structures can have application specific data attached to them. This has several potential uses, it can be used to cache data associated with a structure (for example the hash of some part of the structure) or some additional data (for example a handle to the data in an external library).</p>
+
+<p>Since the application data can be anything at all it is passed and retrieved as a <b>void *</b> type.</p>
+
+<p>The <b>RSA_get_ex_new_index()</b> function is initially called to &quot;register&quot; some new application specific data. It takes three optional function pointers which are called when the parent structure (in this case an RSA structure) is initially created, when it is copied and when it is freed up. If any or all of these function pointer arguments are not used they should be set to NULL. The precise manner in which these function pointers are called is described in more detail below. <b>RSA_get_ex_new_index()</b> also takes additional long and pointer parameters which will be passed to the supplied functions but which otherwise have no special meaning. It returns an <b>index</b> which should be stored (typically in a static variable) and passed used in the <b>idx</b> parameter in the remaining functions. Each successful call to <b>RSA_get_ex_new_index()</b> will return an index greater than any previously returned, this is important because the optional functions are called in order of increasing index value.</p>
+
+<p><b>RSA_set_ex_data()</b> is used to set application specific data, the data is supplied in the <b>arg</b> parameter and its precise meaning is up to the application.</p>
+
+<p><b>RSA_get_ex_data()</b> is used to retrieve application specific data. The data is returned to the application, this will be the same value as supplied to a previous <b>RSA_set_ex_data()</b> call.</p>
+
+<p><b>new_func()</b> is called when a structure is initially allocated (for example with <b>RSA_new()</b>. The parent structure members will not have any meaningful values at this point. This function will typically be used to allocate any application specific structure.</p>
+
+<p><b>free_func()</b> is called when a structure is being freed up. The dynamic parent structure members should not be accessed because they will be freed up when this function is called.</p>
+
+<p><b>new_func()</b> and <b>free_func()</b> take the same parameters. <b>parent</b> is a pointer to the parent RSA structure. <b>ptr</b> is a the application specific data (this wont be of much use in <b>new_func()</b>. <b>ad</b> is a pointer to the <b>CRYPTO_EX_DATA</b> structure from the parent RSA structure: the functions <b>CRYPTO_get_ex_data()</b> and <b>CRYPTO_set_ex_data()</b> can be called to manipulate it. The <b>idx</b> parameter is the index: this will be the same value returned by <b>RSA_get_ex_new_index()</b> when the functions were initially registered. Finally the <b>argl</b> and <b>argp</b> parameters are the values originally passed to the same corresponding parameters when <b>RSA_get_ex_new_index()</b> was called.</p>
+
+<p><b>dup_func()</b> is called when a structure is being copied. Pointers to the destination and source <b>CRYPTO_EX_DATA</b> structures are passed in the <b>to</b> and <b>from</b> parameters respectively. The <b>from_d</b> parameter is passed a pointer to the source application data when the function is called, when the function returns the value is copied to the destination: the application can thus modify the data pointed to by <b>from_d</b> and have different values in the source and destination. The <b>idx</b>, <b>argl</b> and <b>argp</b> parameters are the same as those in <b>new_func()</b> and <b>free_func()</b>.</p>
+
+<h1 id="RETURN-VALUES">RETURN VALUES</h1>
+
+<p><b>RSA_get_ex_new_index()</b> returns a new index or -1 on failure (note 0 is a valid index value).</p>
+
+<p><b>RSA_set_ex_data()</b> returns 1 on success or 0 on failure.</p>
+
+<p><b>RSA_get_ex_data()</b> returns the application data or 0 on failure. 0 may also be valid application data but currently it can only fail if given an invalid <b>idx</b> parameter.</p>
+
+<p><b>new_func()</b> and <b>dup_func()</b> should return 0 for failure and 1 for success.</p>
+
+<p>On failure an error code can be obtained from <a href="../../crypto/ERR_get_error.html">ERR_get_error</a>.</p>
+
+<h1 id="BUGS">BUGS</h1>
+
+<p><b>dup_func()</b> is currently never called.</p>
+
+<p>The return value of <b>new_func()</b> is ignored.</p>
+
+<p>The <b>new_func()</b> function isn&#39;t very useful because no meaningful values are present in the parent RSA structure when it is called.</p>
+
+<h1 id="SEE-ALSO">SEE ALSO</h1>
+
+<p><a href="../../apps/rsa.html">rsa</a>, <a href="../../crypto/CRYPTO_set_ex_data.html">CRYPTO_set_ex_data</a></p>
+
+<h1 id="HISTORY">HISTORY</h1>
+
+<p>RSA_get_ex_new_index(), RSA_set_ex_data() and RSA_get_ex_data() are available since SSLeay 0.9.0.</p>
+
+
+</body>
+
+</html>
+
+

@@ -1,0 +1,61 @@
+<?xml version="1.0" ?>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title></title>
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<link rev="made" href="mailto:root@localhost" />
+</head>
+
+<body style="background-color: white">
+
+
+
+<ul id="index">
+  <li><a href="#NAME">NAME</a></li>
+  <li><a href="#SYNOPSIS">SYNOPSIS</a></li>
+  <li><a href="#DESCRIPTION">DESCRIPTION</a></li>
+  <li><a href="#RETURN-VALUES">RETURN VALUES</a></li>
+  <li><a href="#SEE-ALSO">SEE ALSO</a></li>
+  <li><a href="#HISTORY">HISTORY</a></li>
+</ul>
+
+<h1 id="NAME">NAME</h1>
+
+<p>ERR_put_error, ERR_add_error_data - record an error</p>
+
+<h1 id="SYNOPSIS">SYNOPSIS</h1>
+
+<pre><code> #include &lt;openssl/err.h&gt;
+
+ void ERR_put_error(int lib, int func, int reason, const char *file,
+         int line);
+
+ void ERR_add_error_data(int num, ...);</code></pre>
+
+<h1 id="DESCRIPTION">DESCRIPTION</h1>
+
+<p>ERR_put_error() adds an error code to the thread&#39;s error queue. It signals that the error of reason code <b>reason</b> occurred in function <b>func</b> of library <b>lib</b>, in line number <b>line</b> of <b>file</b>. This function is usually called by a macro.</p>
+
+<p>ERR_add_error_data() associates the concatenation of its <b>num</b> string arguments with the error code added last.</p>
+
+<p><a href="../../crypto/ERR_load_strings.html">ERR_load_strings</a> can be used to register error strings so that the application can a generate human-readable error messages for the error code.</p>
+
+<h1 id="RETURN-VALUES">RETURN VALUES</h1>
+
+<p>ERR_put_error() and ERR_add_error_data() return no values.</p>
+
+<h1 id="SEE-ALSO">SEE ALSO</h1>
+
+<p><a href="../../crypto/err.html">err</a>, <a href="../../crypto/ERR_load_strings.html">ERR_load_strings</a></p>
+
+<h1 id="HISTORY">HISTORY</h1>
+
+<p>ERR_put_error() is available in all versions of SSLeay and OpenSSL. ERR_add_error_data() was added in SSLeay 0.9.0.</p>
+
+
+</body>
+
+</html>
+
+

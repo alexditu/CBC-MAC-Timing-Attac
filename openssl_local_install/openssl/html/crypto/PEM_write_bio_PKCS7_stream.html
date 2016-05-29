@@ -1,0 +1,62 @@
+<?xml version="1.0" ?>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title></title>
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<link rev="made" href="mailto:root@localhost" />
+</head>
+
+<body style="background-color: white">
+
+
+
+<ul id="index">
+  <li><a href="#NAME">NAME</a></li>
+  <li><a href="#SYNOPSIS">SYNOPSIS</a></li>
+  <li><a href="#DESCRIPTION">DESCRIPTION</a></li>
+  <li><a href="#NOTES">NOTES</a></li>
+  <li><a href="#RETURN-VALUES">RETURN VALUES</a></li>
+  <li><a href="#SEE-ALSO">SEE ALSO</a></li>
+  <li><a href="#HISTORY">HISTORY</a></li>
+</ul>
+
+<h1 id="NAME">NAME</h1>
+
+<p>PEM_write_bio_PKCS7_stream - output PKCS7 structure in PEM format.</p>
+
+<h1 id="SYNOPSIS">SYNOPSIS</h1>
+
+<pre><code> #include &lt;openssl/pkcs7.h&gt;
+ #include &lt;openssl/pem.h&gt;
+
+ int PEM_write_bio_PKCS7_stream(BIO *out, PKCS7 *p7, BIO *data, int flags);</code></pre>
+
+<h1 id="DESCRIPTION">DESCRIPTION</h1>
+
+<p>PEM_write_bio_PKCS7_stream() outputs a PKCS7 structure in PEM format.</p>
+
+<p>It is otherwise identical to the function SMIME_write_PKCS7().</p>
+
+<h1 id="NOTES">NOTES</h1>
+
+<p>This function is effectively a version of the PEM_write_bio_PKCS7() supporting streaming.</p>
+
+<h1 id="RETURN-VALUES">RETURN VALUES</h1>
+
+<p>PEM_write_bio_PKCS7_stream() returns 1 for success or 0 for failure.</p>
+
+<h1 id="SEE-ALSO">SEE ALSO</h1>
+
+<p><a href="../../crypto/ERR_get_error.html">ERR_get_error</a>, <a href="../../crypto/PKCS7_sign.html">PKCS7_sign</a>, <a href="../../crypto/PKCS7_verify.html">PKCS7_verify</a>, <a href="../../crypto/PKCS7_encrypt.html">PKCS7_encrypt</a> <a href="../../crypto/PKCS7_decrypt.html">PKCS7_decrypt</a>, <a href="../../crypto/SMIME_write_PKCS7.html">SMIME_write_PKCS7</a>, <a href="../../crypto/i2d_PKCS7_bio_stream.html">i2d_PKCS7_bio_stream</a></p>
+
+<h1 id="HISTORY">HISTORY</h1>
+
+<p>PEM_write_bio_PKCS7_stream() was added to OpenSSL 1.0.0</p>
+
+
+</body>
+
+</html>
+
+

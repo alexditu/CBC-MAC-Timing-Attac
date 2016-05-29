@@ -1,0 +1,91 @@
+<?xml version="1.0" ?>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title></title>
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<link rev="made" href="mailto:root@localhost" />
+</head>
+
+<body style="background-color: white">
+
+
+
+<ul id="index">
+  <li><a href="#NAME">NAME</a></li>
+  <li><a href="#SYNOPSIS">SYNOPSIS</a></li>
+  <li><a href="#DESCRIPTION">DESCRIPTION</a></li>
+  <li><a href="#NOTES">NOTES</a></li>
+  <li><a href="#SEE-ALSO">SEE ALSO</a></li>
+  <li><a href="#HISTORY">HISTORY</a></li>
+</ul>
+
+<h1 id="NAME">NAME</h1>
+
+<p>d2i_DSAPublicKey, i2d_DSAPublicKey, d2i_DSAPrivateKey, i2d_DSAPrivateKey, d2i_DSA_PUBKEY, i2d_DSA_PUBKEY, d2i_DSA_SIG, i2d_DSA_SIG - DSA key encoding and parsing functions.</p>
+
+<h1 id="SYNOPSIS">SYNOPSIS</h1>
+
+<pre><code> #include &lt;openssl/dsa.h&gt;
+ #include &lt;openssl/x509.h&gt;
+
+ DSA * d2i_DSAPublicKey(DSA **a, const unsigned char **pp, long length);
+
+ int i2d_DSAPublicKey(const DSA *a, unsigned char **pp);
+
+ DSA * d2i_DSA_PUBKEY(DSA **a, const unsigned char **pp, long length);
+
+ int i2d_DSA_PUBKEY(const DSA *a, unsigned char **pp);
+
+ DSA * d2i_DSAPrivateKey(DSA **a, const unsigned char **pp, long length);
+
+ int i2d_DSAPrivateKey(const DSA *a, unsigned char **pp);
+
+ DSA * d2i_DSAparams(DSA **a, const unsigned char **pp, long length);
+
+ int i2d_DSAparams(const DSA *a, unsigned char **pp);
+
+ DSA * d2i_DSA_SIG(DSA_SIG **a, const unsigned char **pp, long length);
+
+ int i2d_DSA_SIG(const DSA_SIG *a, unsigned char **pp);</code></pre>
+
+<h1 id="DESCRIPTION">DESCRIPTION</h1>
+
+<p>d2i_DSAPublicKey() and i2d_DSAPublicKey() decode and encode the DSA public key components structure.</p>
+
+<p>d2i_DSA_PUBKEY() and i2d_DSA_PUBKEY() decode and encode an DSA public key using a SubjectPublicKeyInfo (certificate public key) structure.</p>
+
+<p>d2i_DSAPrivateKey(), i2d_DSAPrivateKey() decode and encode the DSA private key components.</p>
+
+<p>d2i_DSAparams(), i2d_DSAparams() decode and encode the DSA parameters using a <b>Dss-Parms</b> structure as defined in RFC2459.</p>
+
+<p>d2i_DSA_SIG(), i2d_DSA_SIG() decode and encode a DSA signature using a <b>Dss-Sig-Value</b> structure as defined in RFC2459.</p>
+
+<p>The usage of all of these functions is similar to the d2i_X509() and i2d_X509() described in the <a href="../../crypto/d2i_X509.html">d2i_X509</a> manual page.</p>
+
+<h1 id="NOTES">NOTES</h1>
+
+<p>The <b>DSA</b> structure passed to the private key encoding functions should have all the private key components present.</p>
+
+<p>The data encoded by the private key functions is unencrypted and therefore offers no private key security.</p>
+
+<p>The <b>DSA_PUBKEY</b> functions should be used in preference to the <b>DSAPublicKey</b> functions when encoding public keys because they use a standard format.</p>
+
+<p>The <b>DSAPublicKey</b> functions use an non standard format the actual data encoded depends on the value of the <b>write_params</b> field of the <b>a</b> key parameter. If <b>write_params</b> is zero then only the <b>pub_key</b> field is encoded as an <b>INTEGER</b>. If <b>write_params</b> is 1 then a <b>SEQUENCE</b> consisting of the <b>p</b>, <b>q</b>, <b>g</b> and <b>pub_key</b> respectively fields are encoded.</p>
+
+<p>The <b>DSAPrivateKey</b> functions also use a non standard structure consiting consisting of a SEQUENCE containing the <b>p</b>, <b>q</b>, <b>g</b> and <b>pub_key</b> and <b>priv_key</b> fields respectively.</p>
+
+<h1 id="SEE-ALSO">SEE ALSO</h1>
+
+<p><a href="../../crypto/d2i_X509.html">d2i_X509</a></p>
+
+<h1 id="HISTORY">HISTORY</h1>
+
+<p>TBA</p>
+
+
+</body>
+
+</html>
+
+

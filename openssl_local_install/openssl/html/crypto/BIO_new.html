@@ -1,0 +1,81 @@
+<?xml version="1.0" ?>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title></title>
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<link rev="made" href="mailto:root@localhost" />
+</head>
+
+<body style="background-color: white">
+
+
+
+<ul id="index">
+  <li><a href="#NAME">NAME</a></li>
+  <li><a href="#SYNOPSIS">SYNOPSIS</a></li>
+  <li><a href="#DESCRIPTION">DESCRIPTION</a></li>
+  <li><a href="#RETURN-VALUES">RETURN VALUES</a></li>
+  <li><a href="#NOTES">NOTES</a></li>
+  <li><a href="#EXAMPLE">EXAMPLE</a></li>
+  <li><a href="#SEE-ALSO">SEE ALSO</a></li>
+</ul>
+
+<h1 id="NAME">NAME</h1>
+
+<p>BIO_new, BIO_set, BIO_free, BIO_vfree, BIO_free_all - BIO allocation and freeing functions</p>
+
+<h1 id="SYNOPSIS">SYNOPSIS</h1>
+
+<pre><code> #include &lt;openssl/bio.h&gt;
+
+ BIO *  BIO_new(BIO_METHOD *type);
+ int    BIO_set(BIO *a,BIO_METHOD *type);
+ int    BIO_free(BIO *a);
+ void   BIO_vfree(BIO *a);
+ void   BIO_free_all(BIO *a);</code></pre>
+
+<h1 id="DESCRIPTION">DESCRIPTION</h1>
+
+<p>The BIO_new() function returns a new BIO using method <b>type</b>.</p>
+
+<p>BIO_set() sets the method of an already existing BIO.</p>
+
+<p>BIO_free() frees up a single BIO, BIO_vfree() also frees up a single BIO but it does not return a value. Calling BIO_free() may also have some effect on the underlying I/O structure, for example it may close the file being referred to under certain circumstances. For more details see the individual BIO_METHOD descriptions.</p>
+
+<p>BIO_free_all() frees up an entire BIO chain, it does not halt if an error occurs freeing up an individual BIO in the chain.</p>
+
+<h1 id="RETURN-VALUES">RETURN VALUES</h1>
+
+<p>BIO_new() returns a newly created BIO or NULL if the call fails.</p>
+
+<p>BIO_set(), BIO_free() return 1 for success and 0 for failure.</p>
+
+<p>BIO_free_all() and BIO_vfree() do not return values.</p>
+
+<h1 id="NOTES">NOTES</h1>
+
+<p>Some BIOs (such as memory BIOs) can be used immediately after calling BIO_new(). Others (such as file BIOs) need some additional initialization, and frequently a utility function exists to create and initialize such BIOs.</p>
+
+<p>If BIO_free() is called on a BIO chain it will only free one BIO resulting in a memory leak.</p>
+
+<p>Calling BIO_free_all() a single BIO has the same effect as calling BIO_free() on it other than the discarded return value.</p>
+
+<p>Normally the <b>type</b> argument is supplied by a function which returns a pointer to a BIO_METHOD. There is a naming convention for such functions: a source/sink BIO is normally called BIO_s_*() and a filter BIO BIO_f_*();</p>
+
+<h1 id="EXAMPLE">EXAMPLE</h1>
+
+<p>Create a memory BIO:</p>
+
+<pre><code> BIO *mem = BIO_new(BIO_s_mem());</code></pre>
+
+<h1 id="SEE-ALSO">SEE ALSO</h1>
+
+<p>TBA</p>
+
+
+</body>
+
+</html>
+
+

@@ -1,0 +1,56 @@
+<?xml version="1.0" ?>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title></title>
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<link rev="made" href="mailto:root@localhost" />
+</head>
+
+<body style="background-color: white">
+
+
+
+<ul id="index">
+  <li><a href="#NAME">NAME</a></li>
+  <li><a href="#SYNOPSIS">SYNOPSIS</a></li>
+  <li><a href="#DESCRIPTION">DESCRIPTION</a></li>
+  <li><a href="#OPTIONS">OPTIONS</a></li>
+</ul>
+
+<h1 id="NAME">NAME</h1>
+
+<p>speed - test library performance</p>
+
+<h1 id="SYNOPSIS">SYNOPSIS</h1>
+
+<p><b>openssl speed</b> [<b>-engine id</b>] [<b>md2</b>] [<b>mdc2</b>] [<b>md5</b>] [<b>hmac</b>] [<b>sha1</b>] [<b>rmd160</b>] [<b>idea-cbc</b>] [<b>rc2-cbc</b>] [<b>rc5-cbc</b>] [<b>bf-cbc</b>] [<b>des-cbc</b>] [<b>des-ede3</b>] [<b>rc4</b>] [<b>rsa512</b>] [<b>rsa1024</b>] [<b>rsa2048</b>] [<b>rsa4096</b>] [<b>dsa512</b>] [<b>dsa1024</b>] [<b>dsa2048</b>] [<b>idea</b>] [<b>rc2</b>] [<b>des</b>] [<b>rsa</b>] [<b>blowfish</b>]</p>
+
+<h1 id="DESCRIPTION">DESCRIPTION</h1>
+
+<p>This command is used to test the performance of cryptographic algorithms.</p>
+
+<h1 id="OPTIONS">OPTIONS</h1>
+
+<dl>
+
+<dt id="engine-id"><b>-engine id</b></dt>
+<dd>
+
+<p>specifying an engine (by its unique <b>id</b> string) will cause <b>speed</b> to attempt to obtain a functional reference to the specified engine, thus initialising it if needed. The engine will then be set as the default for all available algorithms.</p>
+
+</dd>
+<dt id="zero-or-more-test-algorithms"><b>[zero or more test algorithms]</b></dt>
+<dd>
+
+<p>If any options are given, <b>speed</b> tests those algorithms, otherwise all of the above are tested.</p>
+
+</dd>
+</dl>
+
+
+</body>
+
+</html>
+
+

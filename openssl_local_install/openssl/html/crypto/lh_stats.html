@@ -1,0 +1,70 @@
+<?xml version="1.0" ?>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title></title>
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<link rev="made" href="mailto:root@localhost" />
+</head>
+
+<body style="background-color: white">
+
+
+
+<ul id="index">
+  <li><a href="#NAME">NAME</a></li>
+  <li><a href="#SYNOPSIS">SYNOPSIS</a></li>
+  <li><a href="#DESCRIPTION">DESCRIPTION</a></li>
+  <li><a href="#RETURN-VALUES">RETURN VALUES</a></li>
+  <li><a href="#SEE-ALSO">SEE ALSO</a></li>
+  <li><a href="#HISTORY">HISTORY</a></li>
+</ul>
+
+<h1 id="NAME">NAME</h1>
+
+<p>lh_stats, lh_node_stats, lh_node_usage_stats, lh_stats_bio, lh_node_stats_bio, lh_node_usage_stats_bio - LHASH statistics</p>
+
+<h1 id="SYNOPSIS">SYNOPSIS</h1>
+
+<pre><code> #include &lt;openssl/lhash.h&gt;
+
+ void lh_stats(LHASH *table, FILE *out);
+ void lh_node_stats(LHASH *table, FILE *out);
+ void lh_node_usage_stats(LHASH *table, FILE *out);
+
+ void lh_stats_bio(LHASH *table, BIO *out);
+ void lh_node_stats_bio(LHASH *table, BIO *out);
+ void lh_node_usage_stats_bio(LHASH *table, BIO *out);</code></pre>
+
+<h1 id="DESCRIPTION">DESCRIPTION</h1>
+
+<p>The <b>LHASH</b> structure records statistics about most aspects of accessing the hash table. This is mostly a legacy of Eric Young writing this library for the reasons of implementing what looked like a nice algorithm rather than for a particular software product.</p>
+
+<p>lh_stats() prints out statistics on the size of the hash table, how many entries are in it, and the number and result of calls to the routines in this library.</p>
+
+<p>lh_node_stats() prints the number of entries for each &#39;bucket&#39; in the hash table.</p>
+
+<p>lh_node_usage_stats() prints out a short summary of the state of the hash table. It prints the &#39;load&#39; and the &#39;actual load&#39;. The load is the average number of data items per &#39;bucket&#39; in the hash table. The &#39;actual load&#39; is the average number of items per &#39;bucket&#39;, but only for buckets which contain entries. So the &#39;actual load&#39; is the average number of searches that will need to find an item in the hash table, while the &#39;load&#39; is the average number that will be done to record a miss.</p>
+
+<p>lh_stats_bio(), lh_node_stats_bio() and lh_node_usage_stats_bio() are the same as the above, except that the output goes to a <b>BIO</b>.</p>
+
+<h1 id="RETURN-VALUES">RETURN VALUES</h1>
+
+<p>These functions do not return values.</p>
+
+<h1 id="SEE-ALSO">SEE ALSO</h1>
+
+<p><a href="../../crypto/bio.html">bio</a>, <a href="../../crypto/lhash.html">lhash</a></p>
+
+<h1 id="HISTORY">HISTORY</h1>
+
+<p>These functions are available in all versions of SSLeay and OpenSSL.</p>
+
+<p>This manpage is derived from the SSLeay documentation.</p>
+
+
+</body>
+
+</html>
+
+

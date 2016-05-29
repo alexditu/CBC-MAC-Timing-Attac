@@ -1,0 +1,72 @@
+<?xml version="1.0" ?>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title></title>
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<link rev="made" href="mailto:root@localhost" />
+</head>
+
+<body style="background-color: white">
+
+
+
+<ul id="index">
+  <li><a href="#NAME">NAME</a></li>
+  <li><a href="#SYNOPSIS">SYNOPSIS</a></li>
+  <li><a href="#DESCRIPTION">DESCRIPTION</a></li>
+  <li><a href="#NOTES">NOTES</a></li>
+  <li><a href="#RETURN-VALUE">RETURN VALUE</a></li>
+  <li><a href="#SEE-ALSO">SEE ALSO</a></li>
+  <li><a href="#HISTORY">HISTORY</a></li>
+</ul>
+
+<h1 id="NAME">NAME</h1>
+
+<pre><code> CONF_modules_load_file, CONF_modules_load - OpenSSL configuration functions</code></pre>
+
+<h1 id="SYNOPSIS">SYNOPSIS</h1>
+
+<pre><code> #include &lt;openssl/conf.h&gt;
+
+ int CONF_modules_load_file(const char *filename, const char *appname,
+                           unsigned long flags);
+ int CONF_modules_load(const CONF *cnf, const char *appname,
+                      unsigned long flags);</code></pre>
+
+<h1 id="DESCRIPTION">DESCRIPTION</h1>
+
+<p>The function CONF_modules_load_file() configures OpenSSL using file <b>filename</b> and application name <b>appname</b>. If <b>filename</b> is NULL the standard OpenSSL configuration file is used. If <b>appname</b> is NULL the standard OpenSSL application name <b>openssl_conf</b> is used. The behaviour can be cutomized using <b>flags</b>.</p>
+
+<p>CONF_modules_load() is idential to CONF_modules_load_file() except it read configuration information from <b>cnf</b>.</p>
+
+<h1 id="NOTES">NOTES</h1>
+
+<p>The following <b>flags</b> are currently recognized:</p>
+
+<p><b>CONF_MFLAGS_IGNORE_ERRORS</b> if set errors returned by individual configuration modules are ignored. If not set the first module error is considered fatal and no further modules are loads.</p>
+
+<p>Normally any modules errors will add error information to the error queue. If <b>CONF_MFLAGS_SILENT</b> is set no error information is added.</p>
+
+<p>If <b>CONF_MFLAGS_NO_DSO</b> is set configuration module loading from DSOs is disabled.</p>
+
+<p><b>CONF_MFLAGS_IGNORE_MISSING_FILE</b> if set will make CONF_load_modules_file() ignore missing configuration files. Normally a missing configuration file return an error.</p>
+
+<h1 id="RETURN-VALUE">RETURN VALUE</h1>
+
+<p>These functions return 1 for success and a zero or negative value for failure. If module errors are not ignored the return code will reflect the return value of the failing module (this will always be zero or negative).</p>
+
+<h1 id="SEE-ALSO">SEE ALSO</h1>
+
+<p><a>conf</a>, <a href="../../crypto/OPENSSL_config.html">OPENSSL_config</a>, <a>CONF_free(3), CONF_free(3)</a>, <a>err(3),err(3)</a></p>
+
+<h1 id="HISTORY">HISTORY</h1>
+
+<p>CONF_modules_load_file and CONF_modules_load first appeared in OpenSSL 0.9.7.</p>
+
+
+</body>
+
+</html>
+
+

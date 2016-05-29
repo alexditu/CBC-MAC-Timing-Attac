@@ -1,0 +1,57 @@
+<?xml version="1.0" ?>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title></title>
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<link rev="made" href="mailto:root@localhost" />
+</head>
+
+<body style="background-color: white">
+
+
+
+<ul id="index">
+  <li><a href="#NAME">NAME</a></li>
+  <li><a href="#SYNOPSIS">SYNOPSIS</a></li>
+  <li><a href="#DESCRIPTION">DESCRIPTION</a></li>
+  <li><a href="#RETURN-VALUES">RETURN VALUES</a></li>
+  <li><a href="#SEE-ALSO">SEE ALSO</a></li>
+  <li><a href="#HISTORY">HISTORY</a></li>
+</ul>
+
+<h1 id="NAME">NAME</h1>
+
+<p>BN_mod_inverse - compute inverse modulo n</p>
+
+<h1 id="SYNOPSIS">SYNOPSIS</h1>
+
+<pre><code> #include &lt;openssl/bn.h&gt;
+
+ BIGNUM *BN_mod_inverse(BIGNUM *r, BIGNUM *a, const BIGNUM *n,
+           BN_CTX *ctx);</code></pre>
+
+<h1 id="DESCRIPTION">DESCRIPTION</h1>
+
+<p>BN_mod_inverse() computes the inverse of <b>a</b> modulo <b>n</b> places the result in <b>r</b> (<code>(a*r)%n==1</code>). If <b>r</b> is NULL, a new <b>BIGNUM</b> is created.</p>
+
+<p><b>ctx</b> is a previously allocated <b>BN_CTX</b> used for temporary variables. <b>r</b> may be the same <b>BIGNUM</b> as <b>a</b> or <b>n</b>.</p>
+
+<h1 id="RETURN-VALUES">RETURN VALUES</h1>
+
+<p>BN_mod_inverse() returns the <b>BIGNUM</b> containing the inverse, and NULL on error. The error codes can be obtained by <a href="../../crypto/ERR_get_error.html">ERR_get_error</a>.</p>
+
+<h1 id="SEE-ALSO">SEE ALSO</h1>
+
+<p><a href="../../crypto/bn.html">bn</a>, <a href="../../crypto/ERR_get_error.html">ERR_get_error</a>, <a href="../../crypto/BN_add.html">BN_add</a></p>
+
+<h1 id="HISTORY">HISTORY</h1>
+
+<p>BN_mod_inverse() is available in all versions of SSLeay and OpenSSL.</p>
+
+
+</body>
+
+</html>
+
+

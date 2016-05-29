@@ -1,0 +1,64 @@
+<?xml version="1.0" ?>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title></title>
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<link rev="made" href="mailto:root@localhost" />
+</head>
+
+<body style="background-color: white">
+
+
+
+<ul id="index">
+  <li><a href="#NAME">NAME</a></li>
+  <li><a href="#SYNOPSIS">SYNOPSIS</a></li>
+  <li><a href="#DESCRIPTION">DESCRIPTION</a></li>
+  <li><a href="#RETURN-VALUES">RETURN VALUES</a></li>
+  <li><a href="#SEE-ALSO">SEE ALSO</a></li>
+  <li><a href="#HISTORY">HISTORY</a></li>
+</ul>
+
+<h1 id="NAME">NAME</h1>
+
+<p>BN_CTX_new, BN_CTX_init, BN_CTX_free - allocate and free BN_CTX structures</p>
+
+<h1 id="SYNOPSIS">SYNOPSIS</h1>
+
+<pre><code> #include &lt;openssl/bn.h&gt;
+
+ BN_CTX *BN_CTX_new(void);
+
+ void BN_CTX_init(BN_CTX *c);
+
+ void BN_CTX_free(BN_CTX *c);</code></pre>
+
+<h1 id="DESCRIPTION">DESCRIPTION</h1>
+
+<p>A <b>BN_CTX</b> is a structure that holds <b>BIGNUM</b> temporary variables used by library functions. Since dynamic memory allocation to create <b>BIGNUM</b>s is rather expensive when used in conjunction with repeated subroutine calls, the <b>BN_CTX</b> structure is used.</p>
+
+<p>BN_CTX_new() allocates and initializes a <b>BN_CTX</b> structure. BN_CTX_init() initializes an existing uninitialized <b>BN_CTX</b>.</p>
+
+<p>BN_CTX_free() frees the components of the <b>BN_CTX</b>, and if it was created by BN_CTX_new(), also the structure itself. If <a href="../../crypto/BN_CTX_start.html">BN_CTX_start</a> has been used on the <b>BN_CTX</b>, <a>BN_CTX_end</a> must be called before the <b>BN_CTX</b> may be freed by BN_CTX_free().</p>
+
+<h1 id="RETURN-VALUES">RETURN VALUES</h1>
+
+<p>BN_CTX_new() returns a pointer to the <b>BN_CTX</b>. If the allocation fails, it returns <b>NULL</b> and sets an error code that can be obtained by <a href="../../crypto/ERR_get_error.html">ERR_get_error</a>.</p>
+
+<p>BN_CTX_init() and BN_CTX_free() have no return values.</p>
+
+<h1 id="SEE-ALSO">SEE ALSO</h1>
+
+<p><a href="../../crypto/bn.html">bn</a>, <a href="../../crypto/ERR_get_error.html">ERR_get_error</a>, <a href="../../crypto/BN_add.html">BN_add</a>, <a href="../../crypto/BN_CTX_start.html">BN_CTX_start</a></p>
+
+<h1 id="HISTORY">HISTORY</h1>
+
+<p>BN_CTX_new() and BN_CTX_free() are available in all versions on SSLeay and OpenSSL. BN_CTX_init() was added in SSLeay 0.9.1b.</p>
+
+
+</body>
+
+</html>
+
+

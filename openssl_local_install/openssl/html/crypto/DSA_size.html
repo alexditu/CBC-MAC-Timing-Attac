@@ -1,0 +1,56 @@
+<?xml version="1.0" ?>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title></title>
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<link rev="made" href="mailto:root@localhost" />
+</head>
+
+<body style="background-color: white">
+
+
+
+<ul id="index">
+  <li><a href="#NAME">NAME</a></li>
+  <li><a href="#SYNOPSIS">SYNOPSIS</a></li>
+  <li><a href="#DESCRIPTION">DESCRIPTION</a></li>
+  <li><a href="#RETURN-VALUE">RETURN VALUE</a></li>
+  <li><a href="#SEE-ALSO">SEE ALSO</a></li>
+  <li><a href="#HISTORY">HISTORY</a></li>
+</ul>
+
+<h1 id="NAME">NAME</h1>
+
+<p>DSA_size - get DSA signature size</p>
+
+<h1 id="SYNOPSIS">SYNOPSIS</h1>
+
+<pre><code> #include &lt;openssl/dsa.h&gt;
+
+ int DSA_size(const DSA *dsa);</code></pre>
+
+<h1 id="DESCRIPTION">DESCRIPTION</h1>
+
+<p>This function returns the size of an ASN.1 encoded DSA signature in bytes. It can be used to determine how much memory must be allocated for a DSA signature.</p>
+
+<p><b>dsa-&gt;q</b> must not be <b>NULL</b>.</p>
+
+<h1 id="RETURN-VALUE">RETURN VALUE</h1>
+
+<p>The size in bytes.</p>
+
+<h1 id="SEE-ALSO">SEE ALSO</h1>
+
+<p><a href="../../apps/dsa.html">dsa</a>, <a href="../../crypto/DSA_sign.html">DSA_sign</a></p>
+
+<h1 id="HISTORY">HISTORY</h1>
+
+<p>DSA_size() is available in all versions of SSLeay and OpenSSL.</p>
+
+
+</body>
+
+</html>
+
+

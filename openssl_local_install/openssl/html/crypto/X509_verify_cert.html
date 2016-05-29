@@ -1,0 +1,68 @@
+<?xml version="1.0" ?>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title></title>
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<link rev="made" href="mailto:root@localhost" />
+</head>
+
+<body style="background-color: white">
+
+
+
+<ul id="index">
+  <li><a href="#NAME">NAME</a></li>
+  <li><a href="#SYNOPSIS">SYNOPSIS</a></li>
+  <li><a href="#DESCRIPTION">DESCRIPTION</a></li>
+  <li><a href="#RETURN-VALUES">RETURN VALUES</a></li>
+  <li><a href="#NOTES">NOTES</a></li>
+  <li><a href="#BUGS">BUGS</a></li>
+  <li><a href="#SEE-ALSO">SEE ALSO</a></li>
+  <li><a href="#HISTORY">HISTORY</a></li>
+</ul>
+
+<h1 id="NAME">NAME</h1>
+
+<p>X509_verify_cert - discover and verify X509 certificte chain</p>
+
+<h1 id="SYNOPSIS">SYNOPSIS</h1>
+
+<pre><code> #include &lt;openssl/x509.h&gt;
+
+ int X509_verify_cert(X509_STORE_CTX *ctx);</code></pre>
+
+<h1 id="DESCRIPTION">DESCRIPTION</h1>
+
+<p>The X509_verify_cert() function attempts to discover and validate a certificate chain based on parameters in <b>ctx</b>. A complete description of the process is contained in the <a href="../../apps/verify.html">verify</a> manual page.</p>
+
+<h1 id="RETURN-VALUES">RETURN VALUES</h1>
+
+<p>If a complete chain can be built and validated this function returns 1, otherwise it return zero, in exceptional circumstances it can also return a negative code.</p>
+
+<p>If the function fails additional error information can be obtained by examining <b>ctx</b> using, for example X509_STORE_CTX_get_error().</p>
+
+<h1 id="NOTES">NOTES</h1>
+
+<p>Applications rarely call this function directly but it is used by OpenSSL internally for certificate validation, in both the S/MIME and SSL/TLS code.</p>
+
+<p>The negative return value from X509_verify_cert() can only occur if no certificate is set in <b>ctx</b> (due to a programming error) or if a retry operation is requested during internal lookups (which never happens with standard lookup methods). It is however recommended that application check for &lt;= 0 return value on error.</p>
+
+<h1 id="BUGS">BUGS</h1>
+
+<p>This function uses the header <b>x509.h</b> as opposed to most chain verification functiosn which use <b>x509_vfy.h</b>.</p>
+
+<h1 id="SEE-ALSO">SEE ALSO</h1>
+
+<p><a href="../../crypto/X509_STORE_CTX_get_error.html">X509_STORE_CTX_get_error</a></p>
+
+<h1 id="HISTORY">HISTORY</h1>
+
+<p>X509_verify_cert() is available in all versions of SSLeay and OpenSSL.</p>
+
+
+</body>
+
+</html>
+
+

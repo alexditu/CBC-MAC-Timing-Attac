@@ -1,0 +1,97 @@
+<?xml version="1.0" ?>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title></title>
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<link rev="made" href="mailto:root@localhost" />
+</head>
+
+<body style="background-color: white">
+
+
+
+<ul id="index">
+  <li><a href="#NAME">NAME</a></li>
+  <li><a href="#SYNOPSIS">SYNOPSIS</a></li>
+  <li><a href="#DESCRIPTION">DESCRIPTION</a></li>
+  <li><a href="#RETURN-VALUES">RETURN VALUES</a></li>
+  <li><a href="#SEE-ALSO">SEE ALSO</a></li>
+  <li><a href="#HISTORY">HISTORY</a></li>
+</ul>
+
+<h1 id="NAME">NAME</h1>
+
+<p>BN_generate_prime, BN_is_prime, BN_is_prime_fasttest - generate primes and test for primality</p>
+
+<h1 id="SYNOPSIS">SYNOPSIS</h1>
+
+<pre><code> #include &lt;openssl/bn.h&gt;
+
+ BIGNUM *BN_generate_prime(BIGNUM *ret, int num, int safe, BIGNUM *add,
+     BIGNUM *rem, void (*callback)(int, int, void *), void *cb_arg);
+
+ int BN_is_prime(const BIGNUM *a, int checks, void (*callback)(int, int, 
+     void *), BN_CTX *ctx, void *cb_arg);
+
+ int BN_is_prime_fasttest(const BIGNUM *a, int checks,
+     void (*callback)(int, int, void *), BN_CTX *ctx, void *cb_arg,
+     int do_trial_division);</code></pre>
+
+<h1 id="DESCRIPTION">DESCRIPTION</h1>
+
+<p>BN_generate_prime() generates a pseudo-random prime number of <b>num</b> bits. If <b>ret</b> is not <b>NULL</b>, it will be used to store the number.</p>
+
+<p>If <b>callback</b> is not <b>NULL</b>, it is called as follows:</p>
+
+<ul>
+
+<li><p><b>callback(0, i, cb_arg)</b> is called after generating the i-th potential prime number.</p>
+
+</li>
+<li><p>While the number is being tested for primality, <b>callback(1, j, cb_arg)</b> is called as described below.</p>
+
+</li>
+<li><p>When a prime has been found, <b>callback(2, i, cb_arg)</b> is called.</p>
+
+</li>
+</ul>
+
+<p>The prime may have to fulfill additional requirements for use in Diffie-Hellman key exchange:</p>
+
+<p>If <b>add</b> is not <b>NULL</b>, the prime will fulfill the condition p % <b>add</b> == <b>rem</b> (p % <b>add</b> == 1 if <b>rem</b> == <b>NULL</b>) in order to suit a given generator.</p>
+
+<p>If <b>safe</b> is true, it will be a safe prime (i.e. a prime p so that (p-1)/2 is also prime).</p>
+
+<p>The PRNG must be seeded prior to calling BN_generate_prime(). The prime number generation has a negligible error probability.</p>
+
+<p>BN_is_prime() and BN_is_prime_fasttest() test if the number <b>a</b> is prime. The following tests are performed until one of them shows that <b>a</b> is composite; if <b>a</b> passes all these tests, it is considered prime.</p>
+
+<p>BN_is_prime_fasttest(), when called with <b>do_trial_division == 1</b>, first attempts trial division by a number of small primes; if no divisors are found by this test and <b>callback</b> is not <b>NULL</b>, <b>callback(1, -1, cb_arg)</b> is called. If <b>do_trial_division == 0</b>, this test is skipped.</p>
+
+<p>Both BN_is_prime() and BN_is_prime_fasttest() perform a Miller-Rabin probabilistic primality test with <b>checks</b> iterations. If <b>checks == BN_prime_checks</b>, a number of iterations is used that yields a false positive rate of at most 2^-80 for random input.</p>
+
+<p>If <b>callback</b> is not <b>NULL</b>, <b>callback(1, j, cb_arg)</b> is called after the j-th iteration (j = 0, 1, ...). <b>ctx</b> is a pre-allocated <b>BN_CTX</b> (to save the overhead of allocating and freeing the structure in a loop), or <b>NULL</b>.</p>
+
+<h1 id="RETURN-VALUES">RETURN VALUES</h1>
+
+<p>BN_generate_prime() returns the prime number on success, <b>NULL</b> otherwise.</p>
+
+<p>BN_is_prime() returns 0 if the number is composite, 1 if it is prime with an error probability of less than 0.25^<b>checks</b>, and -1 on error.</p>
+
+<p>The error codes can be obtained by <a href="../../crypto/ERR_get_error.html">ERR_get_error</a>.</p>
+
+<h1 id="SEE-ALSO">SEE ALSO</h1>
+
+<p><a href="../../crypto/bn.html">bn</a>, <a href="../../crypto/ERR_get_error.html">ERR_get_error</a>, <a href="../../apps/rand.html">rand</a></p>
+
+<h1 id="HISTORY">HISTORY</h1>
+
+<p>The <b>cb_arg</b> arguments to BN_generate_prime() and to BN_is_prime() were added in SSLeay 0.9.0. The <b>ret</b> argument to BN_generate_prime() was added in SSLeay 0.9.1. BN_is_prime_fasttest() was added in OpenSSL 0.9.5.</p>
+
+
+</body>
+
+</html>
+
+

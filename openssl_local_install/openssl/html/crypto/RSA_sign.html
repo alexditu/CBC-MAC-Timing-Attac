@@ -1,0 +1,74 @@
+<?xml version="1.0" ?>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title></title>
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<link rev="made" href="mailto:root@localhost" />
+</head>
+
+<body style="background-color: white">
+
+
+
+<ul id="index">
+  <li><a href="#NAME">NAME</a></li>
+  <li><a href="#SYNOPSIS">SYNOPSIS</a></li>
+  <li><a href="#DESCRIPTION">DESCRIPTION</a></li>
+  <li><a href="#RETURN-VALUES">RETURN VALUES</a></li>
+  <li><a href="#BUGS">BUGS</a></li>
+  <li><a href="#CONFORMING-TO">CONFORMING TO</a></li>
+  <li><a href="#SEE-ALSO">SEE ALSO</a></li>
+  <li><a href="#HISTORY">HISTORY</a></li>
+</ul>
+
+<h1 id="NAME">NAME</h1>
+
+<p>RSA_sign, RSA_verify - RSA signatures</p>
+
+<h1 id="SYNOPSIS">SYNOPSIS</h1>
+
+<pre><code> #include &lt;openssl/rsa.h&gt;
+
+ int RSA_sign(int type, const unsigned char *m, unsigned int m_len,
+    unsigned char *sigret, unsigned int *siglen, RSA *rsa);
+
+ int RSA_verify(int type, const unsigned char *m, unsigned int m_len,
+    unsigned char *sigbuf, unsigned int siglen, RSA *rsa);</code></pre>
+
+<h1 id="DESCRIPTION">DESCRIPTION</h1>
+
+<p>RSA_sign() signs the message digest <b>m</b> of size <b>m_len</b> using the private key <b>rsa</b> as specified in PKCS #1 v2.0. It stores the signature in <b>sigret</b> and the signature size in <b>siglen</b>. <b>sigret</b> must point to RSA_size(<b>rsa</b>) bytes of memory.</p>
+
+<p><b>type</b> denotes the message digest algorithm that was used to generate <b>m</b>. It usually is one of <b>NID_sha1</b>, <b>NID_ripemd160</b> and <b>NID_md5</b>; see <a>objects</a> for details. If <b>type</b> is <b>NID_md5_sha1</b>, an SSL signature (MD5 and SHA1 message digests with PKCS #1 padding and no algorithm identifier) is created.</p>
+
+<p>RSA_verify() verifies that the signature <b>sigbuf</b> of size <b>siglen</b> matches a given message digest <b>m</b> of size <b>m_len</b>. <b>type</b> denotes the message digest algorithm that was used to generate the signature. <b>rsa</b> is the signer&#39;s public key.</p>
+
+<h1 id="RETURN-VALUES">RETURN VALUES</h1>
+
+<p>RSA_sign() returns 1 on success, 0 otherwise. RSA_verify() returns 1 on successful verification, 0 otherwise.</p>
+
+<p>The error codes can be obtained by <a href="../../crypto/ERR_get_error.html">ERR_get_error</a>.</p>
+
+<h1 id="BUGS">BUGS</h1>
+
+<p>Certain signatures with an improper algorithm identifier are accepted for compatibility with SSLeay 0.4.5 :-)</p>
+
+<h1 id="CONFORMING-TO">CONFORMING TO</h1>
+
+<p>SSL, PKCS #1 v2.0</p>
+
+<h1 id="SEE-ALSO">SEE ALSO</h1>
+
+<p><a href="../../crypto/ERR_get_error.html">ERR_get_error</a>, <a>objects</a>, <a href="../../apps/rsa.html">rsa</a>, <a href="../../crypto/RSA_private_encrypt.html">RSA_private_encrypt</a>, <a>RSA_public_decrypt</a></p>
+
+<h1 id="HISTORY">HISTORY</h1>
+
+<p>RSA_sign() and RSA_verify() are available in all versions of SSLeay and OpenSSL.</p>
+
+
+</body>
+
+</html>
+
+
