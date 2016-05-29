@@ -1,20 +1,4 @@
-
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-
-#include <openssl/sha.h>
-
-#include <openssl/aes.h>
-
-#include <openssl/conf.h>
-#include <openssl/evp.h>
-#include <openssl/err.h>
-
-
-
-void print_hex(char *, char *, int);
-unsigned char * concat(unsigned char *s1, int s1_len, unsigned char *s2, int s2_len);
+#include "aes_cbc_mac.h"
 
 
 /*
@@ -96,7 +80,7 @@ unsigned char * aes_enc_cbc(unsigned char *aes_key, int key_len, unsigned char *
 	AES_set_encrypt_key(aes_key, key_len * 8, &enc_key);
 	AES_cbc_encrypt(aes_input, enc_out, input_len, &enc_key, iv, AES_ENCRYPT);
 
-	print_hex("cbc enc:", enc_out, input_len);
+	// //print_hex("cbc enc:", enc_out, input_len);
 
 	/* AES-128 bit CBC Decryption */
 	memset(iv, 0x00, AES_BLOCK_SIZE); // don't forget to set iv vector again, else you can't decrypt data properly
@@ -104,7 +88,7 @@ unsigned char * aes_enc_cbc(unsigned char *aes_key, int key_len, unsigned char *
 	AES_cbc_encrypt(enc_out, dec_out, input_len, &dec_key, iv, AES_DECRYPT);
 
 	
-	print_hex("cbc dec:", dec_out, input_len);
+	// //print_hex("cbc dec:", dec_out, input_len);
 
 	free(dec_out);
 
@@ -133,11 +117,11 @@ void AES_ecb_encrypt(const unsigned char *in, unsigned char *out,
     AES_set_encrypt_key(aes_key, sizeof(aes_key)*8, &encryptKey);
     AES_ecb_encrypt(aes_input, enc_out, &encryptKey, AES_ENCRYPT);
 
-    print_hex("ecb enc:", enc_out, sizeof(aes_input));
+    //print_hex("ecb enc:", enc_out, sizeof(aes_input));
 
     AES_set_decrypt_key(aes_key, sizeof(aes_key)*8, &dec_key); // Size of key is in bits
 	AES_ecb_encrypt(enc_out, dec_out, &dec_key, AES_DECRYPT);
-	print_hex("ecb dec:", dec_out, sizeof(aes_input));
+	//print_hex("ecb dec:", dec_out, sizeof(aes_input));
 }
 
 unsigned char * aes_ecb_enc(unsigned char *aes_key, int key_len, unsigned char *aes_input, int input_len) {
@@ -150,17 +134,17 @@ unsigned char * aes_ecb_enc(unsigned char *aes_key, int key_len, unsigned char *
     AES_set_encrypt_key(aes_key, key_len * 8, &encryptKey);
     AES_ecb_encrypt(aes_input, enc_out, &encryptKey, AES_ENCRYPT);
 
-    print_hex("ecb enc:", enc_out, input_len);
+    //print_hex("ecb enc:", enc_out, input_len);
 
     AES_set_decrypt_key(aes_key, key_len * 8, &dec_key); // Size of key is in bits
 	AES_ecb_encrypt(enc_out, dec_out, &dec_key, AES_DECRYPT);
-	print_hex("ecb dec:", dec_out, input_len);
+	//print_hex("ecb dec:", dec_out, input_len);
 
 	free(dec_out);
 	return enc_out;
 }
 
-void print_hex(char *msg, char *d, int len) {
+void print_hex(char *msg, unsigned char *d, int len) {
 	unsigned char *data = (unsigned char *) d;
 	printf("%s\n", msg);
 	for (int i = 0; i < len; i++) {
@@ -229,10 +213,11 @@ unsigned char * ljust(unsigned char *data, int len) {
 	unsigned char * justified = malloc(16 * sizeof(unsigned char));
 
 	// size_t n = sizeof(data);
-	printf("len: %d\n", len);
+	// printf("len: %d\n", len);
 	if (len > 16) {
-		perror("Data must be less then or equal to 16 bytes!");
-		return NULL;
+		//perror("Data must be less then or equal to 16 bytes!");
+		//return NULL;
+		return data;
 	}
 
 	int i = 0;
@@ -271,22 +256,22 @@ unsigned char * aes_cbc_mac(unsigned char *k, int k_len, unsigned char *m, int m
  //    k1 = res[0:16]
  //    k2 = res[16:32]
 
-	print_hex("k", key, 16);
+	//print_hex("k", key, 16);
 
 	//SHA256(d, n, md);
-	ext_key = concat(key, 16, "CBC MAC keys", strlen("CBC MAC keys"));
+	ext_key = concat(key, 16, (unsigned char *)"CBC MAC keys", strlen("CBC MAC keys"));
 	sha256(ext_key, 16 + strlen("CBC MAC keys"), &res);
-	print_hex("sha256:", res, 32);
+	//print_hex("sha256:", res, 32);
 
 	k1 = res; // use 16 bytes
 	k2 = res + 16;
 
 	// res_1 = aes_enc_cbc(k1, m, 16 * '\x00')
-	print_hex("k1:", k1, 16);
-	print_hex("msg:", msg, 16);
+	//print_hex("k1:", k1, 16);
+	//print_hex("msg:", msg, 16);
 
 	res_1 = aes_enc_cbc(k1, 16, msg, 16);
-	print_hex("res_1", res_1, 16);
+	//print_hex("res_1", res_1, 16);
 
 
 	// # 2 - Perform another AES encryption (simple, without CBC) on the last block from #1 using k2
@@ -294,7 +279,7 @@ unsigned char * aes_cbc_mac(unsigned char *k, int k_len, unsigned char *m, int m
  //    t = res_2
 
 	res_2 = aes_ecb_enc(k2, 16, res_1, 16);
-	print_hex("res_2", res_2, 16);
+	//print_hex("res_2", res_2, 16);
 
 	free(ext_key);
 	free(key);
@@ -325,7 +310,7 @@ void test_aes_cbc_mac() {
 }
 
 
-int main(int argc, char **argv) {
+int main2(int argc, char **argv) {
 	test_aes_cbc_mac();
 
 	// printf("\n\n");
