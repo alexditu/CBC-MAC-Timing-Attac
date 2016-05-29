@@ -15,6 +15,6 @@ yasm=../yasm/yasm
 
 mkdir -p obj/x64
 
-gcc -g $lvl $opt -o $out src/aes_example.c src/my_getopt.c -Isrc -I../intel_aes_lib/include ../intel_aes_lib/lib/x64/intel_aes64.a
+gcc -g $lvl $opt -o $out src/timing.c src/my_getopt.c -Isrc -I../intel_aes_lib/include ../intel_aes_lib/lib/x64/intel_aes64.a
 
 echo created $out

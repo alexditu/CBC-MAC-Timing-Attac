@@ -31,7 +31,9 @@
  * See also http://en.wikipedia.org/wiki/Cipher_block_chaining#Cipher-block_chaining_.28CBC.29 for cipher mode explanations
  */
 #include <stdio.h>
+#include <stdlib.h> 
 #include <malloc.h>
+#include <stdint.h>
 #include "my_getopt.h"
 
 #ifdef __linux__
@@ -56,6 +58,53 @@
 #endif
 
 extern unsigned long long do_rdtsc(void);
+
+extern void sha256_update(uint32_t *digest, const void *data, 
+                          uint32_t  numBlocks);
+
+const uint32_t shaShortMsgKAV[16] = {
+   0x80636261, 0x00000000, 0x00000000, 0x00000000,
+   0x00000000, 0x00000000, 0x00000000, 0x00000000,
+   0x00000000, 0x00000000, 0x00000000, 0x00000000,
+   0x00000000, 0x00000000, 0x00000000, 0x18000000
+};
+
+/* Initial hash and final digest values */ 
+const uint32_t sha1InitialDigest[5] = {
+   0x67452301, 0xefcdab89, 0x98badcfe, 0x10325476, 0xc3d2e1f0
+};
+
+const uint32_t sha1ShortMsgDigestKAV[5] = {
+   0xa9993e36, 0x4706816a, 0xba3e2571, 0x7850c26c, 0x9cd0d89d
+};
+
+const uint32_t sha256InitialDigest[8] = {
+   0x6a09e667, 0xbb67ae85, 0x3c6ef372, 0xa54ff53a,
+   0x510e527f, 0x9b05688c, 0x1f83d9ab, 0x5be0cd19
+};
+
+const uint32_t sha256ShortMsgDigestKAV[8] = {
+   0xba7816bf, 0x8f01cfea, 0x414140de, 0x5dae2223,
+   0xb00361a3, 0x96177a9c, 0xb410ff61, 0xf20015ad
+};
+
+/* Check the CPUID bit for the availability of the Intel SHA Extensions */
+int check_for_intel_sha_extensions() {
+   int a, b, c, d;
+
+   /* Look for CPUID.7.0.EBX[29] 
+    * EAX = 7, ECX = 0 */
+   a = 7;
+   c = 0;
+
+   asm volatile ("cpuid"
+                 :"=a"(a), "=b"(b), "=c"(c), "=d"(d)
+                 :"a"(a), "c"(c)
+                );
+
+   /* SHA feature bit is EBX[29] */
+   return ((b >> 29) & 1);
+}
 
 int verbose=0;
 
@@ -2123,29 +2172,35 @@ void aes_enc_cbc(int size,
         
 }
 
-void aes_cbc_mac(unsigned char* output)
-{
-    int key_size_in_bytes = 16;
+unsigned char * aes_cbc_mac(unsigned char *k, int k_len, unsigned char *m, int m_len) {
+    unsigned char *ext_key = NULL;
+    unsigned char *k1 = NULL;
+    unsigned char *k2 = NULL;
+    unsigned char *res = NULL;
+    unsigned char *res_1 = (unsigned char *)malloc(16*sizeof(unsigned char));
+    unsigned char *res_2 = (unsigned char *)malloc(16*sizeof(unsigned char));
+    unsigned char *key = ljust(k, k_len);
+    unsigned char *msg = ljust(m, m_len);
 
-    unsigned char *key = "Cozonace si oua ";
-    unsigned char *message = "Hristos a inviat";
+    ext_key = concat(key, 16, (unsigned char *)"CBC MAC keys", strlen("CBC MAC keys"));
+    sha256(ext_key, 16 + strlen("CBC MAC keys"), &res);
+    //print_hex("sha256:", res, 32);
 
-    unsigned char* output1 = (unsigned char *)malloc(16*sizeof(unsigned char));
+    k1 = res; // use 16 bytes
+    k2 = res + 16;
 
-    unsigned char* k1 = (unsigned char *)malloc(16*sizeof(unsigned char));
-    unsigned char* k2 = (unsigned char *)malloc(16*sizeof(unsigned char));
 
-    /*# Derive the keys for raw-CBC and for the final tag
-    res = SHA256.new(k + "CBC MAC keys").digest()
-    k1 = res[0:16]
-    k2 = res[16:32]*/
+    aes_enc_cbc(k_len, USE_iAES, msg, res_1, CBC, k1);
+    aes_enc(USE_iAES, res_1+16, res_2, k2, k_len);
 
-    /*# Get the MAC:
-    # 1 - Do aes-CBC with k1 and iv=0, then keep only last block (last 16 bytes) of encryption */
-    aes_enc_cbc(key_size_in_bytes, USE_iAES, message, output1, CBC, k1);
-
-    /*# 2 - Perform another AES encryption (simple, without CBC) on the last block from #1 using k2*/
-    aes_enc(USE_iAES, output1+16, output, k2, key_size_in_bytes);
+    free(ext_key);
+    free(key);
+    free(msg);
+    free(res);
+    free(res_1);
+    /* DO this in the calling func! */
+    // free(res_2);
+    return res_2;
 }
 
 int main(int argc, char **argv)
@@ -2186,7 +2241,7 @@ int main(int argc, char **argv)
     printf("\n");
 
     printf("quick test: iAES CBC-MAC encryption\n");
-    aes_cbc_mac(output);
+    //aes_cbc_mac(unsigned char *k, int k_len, unsigned char *m, int m_len)
 
     printf("output is 0x");
     for(i=0; i < 16; i++) {printf("%.2x", (unsigned int)(output[i]));}
