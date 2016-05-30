@@ -1,8 +1,8 @@
-LIBCRYPTO=-L/home/alex/Desktop/Master/Sem2/Criptografie/proiect/openssl_local_install/lib
+LIBCRYPTO=-L../openssl_local_install/lib
 #LIBCRYPTO=-L../openssl_local_install/lib/
 #LD_LIBRARY_PATH=../openssl_local_install/lib/
 
-INCLUDE=-I/home/alex/Desktop/Master/Sem2/Criptografie/proiect/openssl_local_install/include
+INCLUDE=-I../openssl_local_install/include
 CFLAGS=-g -std=c99 -Wall
 
 all: clean run

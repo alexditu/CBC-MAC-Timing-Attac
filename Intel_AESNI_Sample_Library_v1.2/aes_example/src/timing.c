@@ -36,6 +36,15 @@
 #include <stdint.h>
 #include "my_getopt.h"
 
+#include <openssl/sha.h>
+
+#include <openssl/aes.h>
+
+#include <openssl/conf.h>
+#include <openssl/evp.h>
+#include <openssl/err.h>
+
+
 #ifdef __linux__
 #include <string.h>
 #include <sys/time.h>
@@ -2126,6 +2135,11 @@ int check_sizes_and_methods(int key_size, int max_size, char *fl_vary, char *fl_
 				unsigned char *key,
 				enum keySize size)*/
 
+void sha256(unsigned char *d, unsigned long n, unsigned char **md) {
+        *md = malloc(SHA256_DIGEST_LENGTH * sizeof(char));
+        SHA256(d, n, *md);
+}
+
 void aes_enc(unsigned int crypt_method,
 		unsigned char *input,
 		unsigned char *output,
@@ -2172,6 +2186,38 @@ void aes_enc_cbc(int size,
         
 }
 
+unsigned char * concat(unsigned char *s1, int s1_len, unsigned char *s2, int s2_len) {
+	unsigned char *s3 = malloc((s1_len + s2_len) * sizeof(char));
+	memcpy(s3, s1, s1_len);
+	memcpy(s3 + s1_len, s2, s2_len);
+	return s3;
+}
+
+unsigned char * ljust(unsigned char *data, int len) {
+	unsigned char * justified = malloc(16 * sizeof(unsigned char));
+
+	// size_t n = sizeof(data);
+	// printf("len: %d\n", len);
+	if (len > 16) {
+		//perror("Data must be less then or equal to 16 bytes!");
+		//return NULL;
+		return data;
+	}
+
+	int i = 0;
+	for (i = 0; i < len; i++) {
+		justified[i] = data[i];
+	}
+
+	/* fill remaining size with space: 0x20 */
+	while (i < 16) {
+		justified[i] = 0x20;
+		i++;
+	}
+
+	return justified;
+}
+
 unsigned char * aes_cbc_mac(unsigned char *k, int k_len, unsigned char *m, int m_len) {
     unsigned char *ext_key = NULL;
     unsigned char *k1 = NULL;
@@ -2203,7 +2249,7 @@ unsigned char * aes_cbc_mac(unsigned char *k, int k_len, unsigned char *m, int m
     return res_2;
 }
 
-int main(int argc, char **argv)
+/*int main(int argc, char **argv)
 {
 	if(check_for_aes_instructions() == 0)
 	{
@@ -2248,4 +2294,4 @@ int main(int argc, char **argv)
     printf("\n");
 
 	return 0;
-}
+}*/

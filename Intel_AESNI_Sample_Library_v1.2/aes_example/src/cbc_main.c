@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
-#include "aes_cbc_mac.h"
+#include "timing.h"
 
 #define SAMPLE_NO   100
 #define TRUE        1
